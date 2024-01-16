@@ -1,0 +1,231 @@
+# Interactive Selection
+
+
+
+## {.sidebar}
+
+```{r}
+#| context: setup
+library(gt)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+library(ggiraph)
+library(htmltools)
+library(reactable)
+color_palette <- c("#E69F00", "#009E73", "#0072B2")
+names(color_palette) <- unique(palmerpenguins::penguins$species)
+```
+
+
+```{r}
+div(
+  div('Species', style = 'font-weight:600'),
+  purrr::map(
+    unique(palmerpenguins::penguins$species), 
+    \(x) tags$input(
+      type = 'checkbox',
+      name = 'checkboxes',
+      checked = 'checked',
+      value = x,
+      x
+    )
+  ),
+  onchange = reactable::JS(
+          "Reactable.setFilter(
+            'tbl',
+            'Species',
+            function() {
+              checkboxes = document.querySelectorAll('input[name=\"checkboxes\"]');
+              return Array.from(checkboxes)
+                .filter(function(checkbox) {
+                  return checkbox.checked;
+                })
+                .map(function(checkbox) {
+                  return checkbox.value;
+                });
+            }
+          )
+          "
+  )
+)
+
+
+```
+
+
+## Main Body
+
+### First row
+
+::: {.card width="30%"}
+
+```{r}
+htmltools::includeMarkdown("04_interactive_selection.md")
+```
+
+:::
+
+
+::: {.card title="Look! Penguins data🐧😍"}
+
+```{r}
+#| context: setup
+filtered_penguins <- palmerpenguins::penguins |>
+  filter(!is.na(sex))
+
+penguin_weights <- filtered_penguins |>
+  group_by(species) |>
+  summarise(
+    Min = min(body_mass_g),
+    Mean = mean(body_mass_g) |> round(digits = 2),
+    Max = max(body_mass_g)
+  ) |>
+  mutate(species = as.character(species)) |>
+  rename(Species = species)
+
+plot_density_species <- function(my_species) {
+  full_range <- filtered_penguins |>
+    pull(body_mass_g) |>
+    range()
+
+  filtered_penguins |>
+    filter(species == my_species) |>
+    ggplot(aes(x = body_mass_g, y = species)) +
+    geom_violin(fill = color_palette[my_species]) +
+    theme_minimal() +
+    scale_y_discrete(breaks = NULL) +
+    scale_x_continuous(breaks = NULL) +
+    labs(x = element_blank(), y = element_blank()) +
+    coord_cartesian(xlim = full_range)
+}
+```
+
+
+```{r}
+library(reactable)
+penguin_weights |> 
+  mutate(Distribution = Species) |>
+  reactable(
+    columns = list(
+      Species = colDef(
+        name = "Species",
+        style = function(value) {
+          list(
+            color = color_palette[value] |> unname(),
+            fontWeight = "bold"
+          )
+        },
+        filterMethod = reactable::JS("
+          function(rows, columnId, filterValue) {
+            return filterValue.length === 0 ? rows : rows.filter(
+              (row) => {
+                return filterValue.includes(row.values[columnId])
+              }
+            )
+          }
+          "
+        )
+      ),
+      Min = colDef(
+        name = "Min",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Mean = colDef(
+        name = "Mean",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Max = colDef(
+        name = "Max",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Distribution = colDef(
+        name = "Distribution",
+        align = 'center',
+        cell = function(value) {
+          plot_density_species(value) |>
+            girafe(code = print, height_svg = 3)
+        }
+      )
+    ),
+    columnGroups = list(
+      colGroup(
+        name = "Penguin's Weight",
+        columns = c("Min", "Mean", "Max", "Distribution")
+      )
+    ),
+    style = list(
+      fontFamily = "Source Sans Pro",
+      fontSize = 24
+    ),
+    defaultPageSize = 3,
+    elementId = "tbl",
+  )
+```
+
+
+
+:::
+
+### Row 
+
+::: {.card title="Look how neatly grouped the species are🟧🟩🟦"}
+
+```{r}
+gg_plt <- palmerpenguins::penguins |>
+  ggplot() +
+  geom_point_interactive(
+    aes(
+      bill_length_mm,
+      flipper_length_mm,
+      fill = species,
+      data_id = species,
+      tooltip = glue::glue(
+        "Bill length: {bill_length_mm}\n
+         Flipper length: {flipper_length_mm}\n
+         Species: {species}"
+      )
+    ),
+    shape = 21,
+    size = 6,
+    alpha = 0.8
+  ) +
+  theme_minimal(base_size = 24, base_family = 'Source Sans Pro') +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = 'none'
+  ) +
+  labs(
+    x = 'Bill length (in mm)',
+    y = 'Flipper length (in mm)'
+  ) +
+  scale_fill_manual(values = color_palette)
+
+girafe(
+  ggobj = gg_plt,
+  width = 16,
+  height = 6,
+  options = list(
+    opts_tooltip(
+      zindex = 9999
+    ),
+    opts_hover(css = ''),
+    opts_hover_inv(css = 'opacity:0.2;')
+  )
+)
+```
+
+:::
+

@@ -1,0 +1,147 @@
+
+
+# All Static
+
+```{r}
+#| context: setup
+
+library(gt)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+color_palette <- c("#E69F00", "#009E73", "#0072B2")
+names(color_palette) <- unique(palmerpenguins::penguins$species)
+```
+
+
+
+
+## First row
+
+::: {.card width="30%"}
+
+```{r}
+htmltools::includeMarkdown("01_all_static_intro.md")
+```
+
+:::
+
+
+::: {.card title="Look! Penguins data🐧😍"}
+
+```{r}
+#| context: setup
+filtered_penguins <- palmerpenguins::penguins |>
+  filter(!is.na(sex))
+
+penguin_weights <- filtered_penguins |>
+  group_by(species) |>
+  summarise(
+    Min = min(body_mass_g),
+    Mean = mean(body_mass_g) |> round(digits = 2),
+    Max = max(body_mass_g)
+  ) |>
+  mutate(species = as.character(species)) |>
+  rename(Species = species)
+
+plot_density_species <- function(my_species) {
+  full_range <- filtered_penguins |>
+    pull(body_mass_g) |>
+    range()
+
+  filtered_penguins |>
+    filter(species == my_species) |>
+    ggplot(aes(x = body_mass_g, y = species)) +
+    geom_violin(fill = color_palette[my_species]) +
+    theme_minimal() +
+    scale_y_discrete(breaks = NULL) +
+    scale_x_continuous(breaks = NULL) +
+    labs(x = element_blank(), y = element_blank()) +
+    coord_cartesian(xlim = full_range)
+}
+```
+
+
+```{r}
+penguin_weights |>
+  mutate(Distribution = Species) |>
+  gt() |>
+  tab_spanner(
+    label = "Penguin's Weight",
+    columns = -Species
+  ) |>
+  text_transform(
+    locations = cells_body(columns = "Distribution"),
+    fn = function(column) {
+      map(column, plot_density_species) |>
+        ggplot_image(height = px(75), aspect_ratio = 3)
+    }
+  ) |>
+  fmt_number(
+    columns = where(is.numeric),
+    pattern = "{x}g",
+    decimals = 0
+  ) |>
+  tab_options(
+    table.font.names = "Source Sans Pro",
+    table.font.size = px(24)
+  ) |>
+  tab_style(
+    locations = cells_body(columns = Species, row = 1),
+    style = cell_text(color = color_palette["Adelie"], weight = 600)
+  ) |>
+  tab_style(
+    locations = cells_body(columns = Species, row = 2),
+    style = cell_text(color = color_palette["Chinstrap"], weight = 600)
+  ) |>
+  tab_style(
+    locations = cells_body(columns = Species, row = 3),
+    style = cell_text(color = color_palette["Gentoo"], weight = 600)
+  ) |>
+  tab_style(
+    locations = list(
+      cells_column_labels(), cells_column_spanners()
+    ),
+    style = cell_text(weight = 600)
+  )
+```
+
+
+:::
+
+
+## Row 
+
+::: {.card title="Look how neatly grouped the species are🟧🟩🟦"}
+
+```{r}
+#| fig-width: 16
+#| fig-height: 5
+palmerpenguins::penguins |>
+  ggplot() +
+  geom_point(
+    aes(
+      bill_length_mm,
+      flipper_length_mm,
+      fill = species
+    ),
+    shape = 21,
+    size = 6,
+    alpha = 0.8
+  ) +
+  theme_minimal(base_size = 24, base_family = "Source Sans Pro") +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "none"
+  ) +
+  labs(
+    x = "Bill length (in mm)",
+    y = "Flipper length (in mm)"
+  ) +
+  scale_fill_manual(values = color_palette)
+```
+
+:::
+
+
+

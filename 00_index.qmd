@@ -1,0 +1,44 @@
+---
+title: Penguins Dashboard
+format: dashboard
+theme: flatly
+---
+
+
+
+```{css}
+#| context: setup
+h1#welcome {
+  margin-top: 0px;
+}
+
+.girafe, .girafe_container_std {
+  margin-left: 0px;
+  margin-right: 0px;
+  height: 100%
+}
+
+div[data-context="setup"] {
+  display: none;
+}
+
+```
+
+
+{{< include 01_all_static.qmd >}}
+
+
+{{< include 02_interactive_plot.qmd >}}
+
+
+{{< include 03_interactive_table.qmd >}}
+
+{{< include 04_ojs_reactable.qmd >}}
+
+<!-- {{< include 05_ojs_plots.qmd >}} -->
+
+
+<!-- R-Shiny with sliders to include points in plot(USE {webr}) -->
+
+<!-- Shiny for Python with Sliders to include points in plot use shinylive -->
+

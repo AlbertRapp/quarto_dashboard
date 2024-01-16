@@ -1,0 +1,210 @@
+# OJS Slider
+
+
+
+## {.sidebar}
+
+```{r}
+#| context: setup
+library(gt)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+library(ggiraph)
+color_palette <- c("#E69F00", "#009E73", "#0072B2")
+names(color_palette) <- unique(palmerpenguins::penguins$species)
+```
+
+```{ojs}
+viewof species_new = Inputs.checkbox(
+  ["Adelie", "Chinstrap", "Gentoo"],
+  {
+    value: ["Adelie", "Chinstrap", "Gentoo"],
+    label: "Species"
+  }
+)
+```
+
+```{ojs}
+//| output: false
+penguin_dat = FileAttachment("penguins.csv").csv({ typed: true })
+```
+
+
+
+
+```{ojs}
+viewof bill_length_min = Inputs.range(
+  d3.extent(penguin_dat, d => d.bill_length_mm), 
+  {label: "Choose minimum bill length (mm):", 
+  step: 1,
+  value: 35}
+)
+```
+
+
+```{ojs}
+//| output: false
+data_new = FileAttachment("penguin_weights.csv").csv({ typed: true })
+
+filtered_new = data_new.filter(penguin => {
+  return species_new.includes(penguin.Species)
+})
+
+// Update table data when filtered data changes
+Reactable.setData('tbl-new', filtered_new)
+```
+
+
+## Main Body
+
+### First row
+
+::: {.card width="30%"}
+
+```{r}
+htmltools::includeMarkdown("05_ojs_plots.md")
+```
+
+:::
+
+
+::: {.card title="Look! Penguins data🐧😍"}
+
+```{r}
+#| context: setup
+filtered_penguins <- palmerpenguins::penguins |>
+  filter(!is.na(sex))
+
+penguin_weights <- filtered_penguins |>
+  group_by(species) |>
+  summarise(
+    Min = min(body_mass_g),
+    Mean = mean(body_mass_g) |> round(digits = 2),
+    Max = max(body_mass_g)
+  ) |>
+  mutate(species = as.character(species)) |>
+  rename(Species = species)
+
+plot_density_species <- function(my_species) {
+  full_range <- filtered_penguins |>
+    pull(body_mass_g) |>
+    range()
+
+  filtered_penguins |>
+    filter(species == my_species) |>
+    ggplot(aes(x = body_mass_g, y = species)) +
+    geom_violin(fill = color_palette[my_species]) +
+    theme_minimal() +
+    scale_y_discrete(breaks = NULL) +
+    scale_x_continuous(breaks = NULL) +
+    labs(x = element_blank(), y = element_blank()) +
+    coord_cartesian(xlim = full_range)
+}
+```
+
+
+```{r}
+#translate this table to reactable from gt
+
+library(reactable)
+penguin_weights |> 
+  mutate(Distribution = Species) |>
+  reactable(
+    columns = list(
+      Species = colDef(
+        name = "Species",
+        style = function(value) {
+          list(
+            color = color_palette[value] |> unname(),
+            fontWeight = "bold"
+          )
+          
+        }
+      ),
+      Min = colDef(
+        name = "Min",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Mean = colDef(
+        name = "Mean",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Max = colDef(
+        name = "Max",
+        align = "right",
+        format = colFormat(
+          digits = 0,
+          suffix = 'g'
+        )
+      ),
+      Distribution = colDef(
+        name = "Distribution",
+        align = 'center',
+        cell = function(value) {
+          plot_density_species(value) |>
+            girafe(code = print, height_svg = 3)
+        }
+      )
+    ),
+    columnGroups = list(
+      colGroup(
+        name = "Penguin's Weight",
+        columns = c("Min", "Mean", "Max", "Distribution")
+      )
+    ),
+    style = list(
+      fontFamily = "Source Sans Pro",
+      fontSize = 24
+    ),
+    defaultPageSize = 3,
+    elementId = "tbl-new"
+  )
+```
+
+
+
+:::
+
+### Row 
+
+::: {.card title="Look how neatly grouped the species are🟧🟩🟦"}
+
+
+```{ojs}
+Plot.plot({
+  marks: [
+    Plot.dot(
+      penguin_dat, 
+      {
+        x: "bill_length_mm", 
+        y: "flipper_length_mm", 
+        fill: "species",
+        r: 8,
+        opacity: 0.6,
+        filter: (d => d.bill_length_mm > bill_length_min),
+        tip: true
+      }
+    )
+  ],
+  grid: true,
+  x: {label: 'Bill length (mm)', labelOffset: -5},
+  y: {label: 'Flipper length (mm)'},
+  color: {label: 'Species'},
+  style: {fontSize: "16px"}
+});
+```
+
+
+
+
+:::
+

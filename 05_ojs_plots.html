@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.526">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ojs_plots</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="05_ojs_plots_files/libs/clipboard/clipboard.min.js"></script>
+<script src="05_ojs_plots_files/libs/quarto-html/quarto.js"></script>
+<script src="05_ojs_plots_files/libs/quarto-html/popper.min.js"></script>
+<script src="05_ojs_plots_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="05_ojs_plots_files/libs/quarto-html/anchor.min.js"></script>
+<link href="05_ojs_plots_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="05_ojs_plots_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="05_ojs_plots_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="05_ojs_plots_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="05_ojs_plots_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script type="module" src="05_ojs_plots_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="05_ojs_plots_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="05_ojs_plots_files/libs/core-js-2.5.3/shim.min.js"></script>
+<script src="05_ojs_plots_files/libs/react-17.0.0/react.min.js"></script>
+<script src="05_ojs_plots_files/libs/react-17.0.0/react-dom.min.js"></script>
+<script src="05_ojs_plots_files/libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="05_ojs_plots_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="05_ojs_plots_files/libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+<script src="05_ojs_plots_files/libs/reactable-binding-0.4.4/reactable.js"></script>
+<script src="05_ojs_plots_files/libs/d3-bundle-5.16.0/d3-bundle.min.js"></script>
+<script src="05_ojs_plots_files/libs/d3-lasso-0.0.5/d3-lasso.min.js"></script>
+<script src="05_ojs_plots_files/libs/save-svg-as-png-1.4.17/save-svg-as-png.min.js"></script>
+<script src="05_ojs_plots_files/libs/flatbush-4.0.0/flatbush.min.js"></script>
+<link href="05_ojs_plots_files/libs/ggiraphjs-0.4.6/ggiraphjs.min.css" rel="stylesheet">
+<script src="05_ojs_plots_files/libs/ggiraphjs-0.4.6/ggiraphjs.min.js"></script>
+<script src="05_ojs_plots_files/libs/girafe-binding-0.8.7/girafe.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="ojs-slider" class="level1">
+<h1>OJS Slider</h1>
+<section id="section" class="level2 sidebar">
+<h2 class="sidebar anchored" data-anchor-id="section"></h2>
+<div class="cell" data-context="setup">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggiraph)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>color_palette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#009E73"</span>, <span class="st">"#0072B2"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(color_palette) <span class="ot">&lt;-</span> <span class="fu">unique</span>(palmerpenguins<span class="sc">::</span>penguins<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" data-startfrom="18" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 17;"><span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>viewof species_new <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Adelie"</span><span class="op">,</span> <span class="st">"Chinstrap"</span><span class="op">,</span> <span class="st">"Gentoo"</span>]<span class="op">,</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> [<span class="st">"Adelie"</span><span class="op">,</span> <span class="st">"Chinstrap"</span><span class="op">,</span> <span class="st">"Gentoo"</span>]<span class="op">,</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Species"</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell hidden">
+<div class="sourceCode cell-code" id="cb7" data-startfrom="29" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 28;"><span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>penguin_dat <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"penguins.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" data-startfrom="34" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 33;"><span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>viewof bill_length_min <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  d3<span class="op">.</span><span class="fu">extent</span>(penguin_dat<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">bill_length_mm</span>)<span class="op">,</span> </span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">label</span><span class="op">:</span> <span class="st">"Choose minimum bill length (mm):"</span><span class="op">,</span> </span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">35</span>}</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell hidden">
+<div class="sourceCode cell-code" id="cb9" data-startfrom="46" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 45;"><span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>data_new <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"penguin_weights.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>filtered_new <span class="op">=</span> data_new<span class="op">.</span><span class="fu">filter</span>(penguin <span class="kw">=&gt;</span> {</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> species_new<span class="op">.</span><span class="fu">includes</span>(penguin<span class="op">.</span><span class="at">Species</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co">// Update table data when filtered data changes</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>Reactable<span class="op">.</span><span class="fu">setData</span>(<span class="st">'tbl-new'</span><span class="op">,</span> filtered_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="main-body" class="level2">
+<h2 class="anchored" data-anchor-id="main-body">Main Body</h2>
+<section id="first-row" class="level3">
+<h3 class="anchored" data-anchor-id="first-row">First row</h3>
+<div class="card" width="30%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>htmltools<span class="sc">::</span><span class="fu">includeMarkdown</span>(<span class="st">"04_interactive_selection.md"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<h1 id="welcome">Welcome</h1>
+<p>On this page, we made the table <strong>even more interactive</strong>.
+You can now unfold a sidebar where checkboxes are waiting for you.
+With these checkboxes, you can toggle the species that you want to see inside of the table.
+The table is the same <code>{reactable}</code> table as before.
+The only change is that behind the scenes, Observable JS modifies the underlying data set of the table using the inputs from the checkboxes.</p>
+
+</div>
+</div>
+</div>
+<div class="card" title="Look! Penguins data🐧😍">
+<div class="cell" data-context="setup">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>filtered_penguins <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>penguin_weights <span class="ot">&lt;-</span> filtered_penguins <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(body_mass_g),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">mean</span>(body_mass_g) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">2</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(body_mass_g)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">as.character</span>(species)) <span class="sc">|&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Species =</span> species)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plot_density_species <span class="ot">&lt;-</span> <span class="cf">function</span>(my_species) {</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  full_range <span class="ot">&lt;-</span> filtered_penguins <span class="sc">|&gt;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">range</span>()</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  filtered_penguins <span class="sc">|&gt;</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(species <span class="sc">==</span> my_species) <span class="sc">|&gt;</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> species)) <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_violin</span>(<span class="at">fill =</span> color_palette[my_species]) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_discrete</span>(<span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">element_blank</span>(), <span class="at">y =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> full_range)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#translate this table to reactable from gt</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>penguin_weights <span class="sc">|&gt;</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Distribution =</span> Species) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reactable</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">list</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">Species =</span> <span class="fu">colDef</span>(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Species"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">style =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>          <span class="fu">list</span>(</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> color_palette[value] <span class="sc">|&gt;</span> <span class="fu">unname</span>(),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontWeight =</span> <span class="st">"bold"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">Min =</span> <span class="fu">colDef</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Min"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="st">"right"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="fu">colFormat</span>(</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="dv">0</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">suffix =</span> <span class="st">'g'</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean =</span> <span class="fu">colDef</span>(</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Mean"</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="st">"right"</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="fu">colFormat</span>(</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="dv">0</span>,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>          <span class="at">suffix =</span> <span class="st">'g'</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">Max =</span> <span class="fu">colDef</span>(</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Max"</span>,</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="st">"right"</span>,</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="fu">colFormat</span>(</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="dv">0</span>,</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>          <span class="at">suffix =</span> <span class="st">'g'</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">Distribution =</span> <span class="fu">colDef</span>(</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Distribution"</span>,</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="st">'center'</span>,</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">cell =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>          <span class="fu">plot_density_species</span>(value) <span class="sc">|&gt;</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>            <span class="fu">girafe</span>(<span class="at">code =</span> print, <span class="at">height_svg =</span> <span class="dv">3</span>)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">columnGroups =</span> <span class="fu">list</span>(</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">colGroup</span>(</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Penguin's Weight"</span>,</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>        <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">"Min"</span>, <span class="st">"Mean"</span>, <span class="st">"Max"</span>, <span class="st">"Distribution"</span>)</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">fontFamily =</span> <span class="st">"Source Sans Pro"</span>,</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">fontSize =</span> <span class="dv">24</span></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">defaultPageSize =</span> <span class="dv">3</span>,</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">elementId =</span> <span class="st">"tbl-new"</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item anchored" id="tbl-new" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="tbl-new">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Species":["Adelie","Chinstrap","Gentoo"],"Min":[2850,2700,3950],"Mean":[3706.16,3733.09,5092.44],"Max":[4775,4800,6300],"Distribution":["Adelie","Chinstrap","Gentoo"]},"columns":[{"id":"Species","name":"Species","type":"character","style":[{"color":"#E69F00","fontWeight":"bold"},{"color":"#0072B2","fontWeight":"bold"},{"color":"#009E73","fontWeight":"bold"}]},{"id":"Min","name":"Min","type":"numeric","format":{"cell":{"suffix":"g","digits":0},"aggregated":{"suffix":"g","digits":0}},"align":"right"},{"id":"Mean","name":"Mean","type":"numeric","format":{"cell":{"suffix":"g","digits":0},"aggregated":{"suffix":"g","digits":0}},"align":"right"},{"id":"Max","name":"Max","type":"numeric","format":{"cell":{"suffix":"g","digits":0},"aggregated":{"suffix":"g","digits":0}},"align":"right"},{"id":"Distribution","name":"Distribution","type":"character","cell":[{"name":"WidgetContainer","attribs":{"key":"fd71dea1105c96d741a4f922cb13bcba"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"id":"htmlwidget-603f814939012f0da996","style":{"width":"100%","height":"338px"},"className":"girafe html-widget html-fill-item-overflow-hidden html-fill-item"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-603f814939012f0da996"},"children":["{\"x\":{\"html\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\\n<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='ggiraph-svg' role='img' id='svg_991d17ad_3cb2_4439_aa43_4755fa937d54' viewBox='0 0 504 216'>\\n <defs id='svg_991d17ad_3cb2_4439_aa43_4755fa937d54_defs'>\\n  <clipPath id='svg_991d17ad_3cb2_4439_aa43_4755fa937d54_c1'>\\n   <rect x='0' y='0' width='504' height='216'/>\\n  <\\/clipPath>\\n  <clipPath id='svg_991d17ad_3cb2_4439_aa43_4755fa937d54_c2'>\\n   <rect x='10.51' y='5.48' width='488.01' height='200.01'/>\\n  <\\/clipPath>\\n <\\/defs>\\n <g id='svg_991d17ad_3cb2_4439_aa43_4755fa937d54_rootg' class='ggiraph-svg-rootg'>\\n  <g clip-path='url(#svg_991d17ad_3cb2_4439_aa43_4755fa937d54_c1)'>\\n   <rect x='0' y='0' width='504' height='216' fill='#FFFFFF' fill-opacity='1' stroke='#FFFFFF' stroke-opacity='1' stroke-width='0.75' stroke-linejoin='round' stroke-linecap='round' class='ggiraph-svg-bg'/>\\n  <\\/g>\\n  <g clip-path='url(#svg_991d17ad_3cb2_4439_aa43_4755fa937d54_c2)'>\\n   <polygon points='51.18,123.41 51.64,123.77 52.10,124.13 52.57,124.49 53.03,124.86 53.50,125.22 53.96,125.59 54.43,125.96 54.89,126.33 55.35,126.70 55.82,127.07 56.28,127.44 56.75,127.81 57.21,128.19 57.68,128.56 58.14,128.94 58.60,129.32 59.07,129.70 59.53,130.07 60.00,130.45 60.46,130.83 60.93,131.21 61.39,131.59 61.85,131.97 62.32,132.36 62.78,132.74 63.25,133.12 63.71,133.50 64.18,133.88 64.64,134.27 65.10,134.65 65.57,135.03 66.03,135.42 66.50,135.80 66.96,136.18 67.42,136.57 67.89,136.95 68.35,137.33 68.82,137.72 69.28,138.10 69.75,138.48 70.21,138.87 70.67,139.25 71.14,139.63 71.60,140.02 72.07,140.40 72.53,140.78 73.00,141.17 73.46,141.55 73.92,141.93 74.39,142.32 74.85,142.70 75.32,143.08 75.78,143.46 76.25,143.85 76.71,144.23 77.17,144.61 77.64,144.99 78.10,145.37 78.57,145.76 79.03,146.14 79.50,146.52 79.96,146.90 80.42,147.28 80.89,147.66 81.35,148.04 81.82,148.42 82.28,148.80 82.74,149.18 83.21,149.56 83.67,149.94 84.14,150.32 84.60,150.70 85.07,151.08 85.53,151.46 85.99,151.84 86.46,152.22 86.92,152.60 87.39,152.98 87.85,153.35 88.32,153.73 88.78,154.11 89.24,154.49 89.71,154.86 90.17,155.24 90.64,155.62 91.10,156.00 91.57,156.37 92.03,156.75 92.49,157.13 92.96,157.50 93.42,157.88 93.89,158.25 94.35,158.63 94.82,159.00 95.28,159.38 95.74,159.75 96.21,160.13 96.67,160.50 97.14,160.87 97.60,161.25 98.06,161.62 98.53,161.99 98.99,162.36 99.46,162.73 99.92,163.10 100.39,163.47 100.85,163.84 101.31,164.20 101.78,164.57 102.24,164.93 102.71,165.30 103.17,165.66 103.64,166.02 104.10,166.38 104.56,166.73 105.03,167.09 105.49,167.44 105.96,167.80 106.42,168.15 106.89,168.49 107.35,168.84 107.81,169.18 108.28,169.52 108.74,169.86 109.21,170.19 109.67,170.52 110.14,170.85 110.60,171.17 111.06,171.50 111.53,171.81 111.99,172.13 112.46,172.44 112.92,172.74 113.38,173.04 113.85,173.34 114.31,173.63 114.78,173.92 115.24,174.20 115.71,174.48 116.17,174.75 116.63,175.01 117.10,175.28 117.56,175.53 118.03,175.78 118.49,176.02 118.96,176.26 119.42,176.49 119.88,176.72 120.35,176.94 120.81,177.15 121.28,177.36 121.74,177.56 122.21,177.75 122.67,177.94 123.13,178.12 123.60,178.29 124.06,178.45 124.53,178.61 124.99,178.76 125.46,178.91 125.92,179.05 126.38,179.18 126.85,179.30 127.31,179.42 127.78,179.53 128.24,179.64 128.70,179.73 129.17,179.83 129.63,179.91 130.10,179.99 130.56,180.06 131.03,180.13 131.49,180.19 131.95,180.24 132.42,180.29 132.88,180.33 133.35,180.37 133.81,180.40 134.28,180.43 134.74,180.45 135.20,180.47 135.67,180.48 136.13,180.49 136.60,180.49 137.06,180.49 137.53,180.49 137.99,180.48 138.45,180.46 138.92,180.45 139.38,180.43 139.85,180.41 140.31,180.38 140.78,180.36 141.24,180.33 141.70,180.30 142.17,180.26 142.63,180.23 143.10,180.19 143.56,180.15 144.02,180.11 144.49,180.06 144.95,180.02 145.42,179.98 145.88,179.93 146.35,179.88 146.81,179.84 147.27,179.79 147.74,179.74 148.20,179.69 148.67,179.64 149.13,179.59 149.60,179.54 150.06,179.49 150.52,179.44 150.99,179.38 151.45,179.33 151.92,179.28 152.38,179.22 152.85,179.17 153.31,179.12 153.77,179.06 154.24,179.01 154.70,178.95 155.17,178.89 155.63,178.84 156.10,178.78 156.56,178.72 157.02,178.66 157.49,178.59 157.95,178.53 158.42,178.47 158.88,178.40 159.34,178.33 159.81,178.26 160.27,178.19 160.74,178.11 161.20,178.03 161.67,177.95 162.13,177.87 162.59,177.79 163.06,177.70 163.52,177.60 163.99,177.51 164.45,177.41 164.92,177.31 165.38,177.20 165.84,177.09 166.31,176.97 166.77,176.85 167.24,176.73 167.70,176.60 168.17,176.47 168.63,176.33 169.09,176.18 169.56,176.04 170.02,175.88 170.49,175.72 170.95,175.56 171.42,175.39 171.88,175.21 172.34,175.03 172.81,174.84 173.27,174.65 173.74,174.45 174.20,174.24 174.66,174.03 175.13,173.81 175.59,173.59 176.06,173.36 176.52,173.12 176.99,172.88 177.45,172.64 177.91,172.38 178.38,172.12 178.84,171.86 179.31,171.59 179.77,171.31 180.24,171.03 180.70,170.74 181.16,170.45 181.63,170.15 182.09,169.85 182.56,169.54 183.02,169.23 183.49,168.91 183.95,168.59 184.41,168.27 184.88,167.94 185.34,167.60 185.81,167.27 186.27,166.93 186.74,166.58 187.20,166.24 187.66,165.89 188.13,165.54 188.59,165.18 189.06,164.82 189.52,164.47 189.98,164.11 190.45,163.75 190.91,163.38 191.38,163.02 191.84,162.66 192.31,162.29 192.77,161.93 193.23,161.57 193.70,161.20 194.16,160.84 194.63,160.48 195.09,160.12 195.56,159.76 196.02,159.40 196.48,159.04 196.95,158.69 197.41,158.34 197.88,157.99 198.34,157.64 198.81,157.30 199.27,156.95 199.73,156.62 200.20,156.28 200.66,155.95 201.13,155.62 201.59,155.30 202.06,154.98 202.52,154.67 202.98,154.35 203.45,154.05 203.91,153.74 204.38,153.44 204.84,153.15 205.30,152.86 205.77,152.57 206.23,152.30 206.70,152.02 207.16,151.75 207.63,151.48 208.09,151.22 208.55,150.96 209.02,150.71 209.48,150.46 209.95,150.21 210.41,149.97 210.88,149.73 211.34,149.50 211.80,149.27 212.27,149.05 212.73,148.83 213.20,148.61 213.66,148.40 214.13,148.19 214.59,147.98 215.05,147.78 215.52,147.58 215.98,147.38 216.45,147.18 216.91,146.99 217.38,146.80 217.84,146.61 218.30,146.42 218.77,146.24 219.23,146.05 219.70,145.87 220.16,145.69 220.62,145.51 221.09,145.33 221.55,145.15 222.02,144.97 222.48,144.79 222.95,144.62 223.41,144.44 223.87,144.26 224.34,144.08 224.80,143.90 225.27,143.72 225.73,143.54 226.20,143.36 226.66,143.18 227.12,143.00 227.59,142.81 228.05,142.63 228.52,142.44 228.98,142.25 229.45,142.06 229.91,141.87 230.37,141.67 230.84,141.48 231.30,141.28 231.77,141.08 232.23,140.88 232.70,140.68 233.16,140.47 233.62,140.27 234.09,140.06 234.55,139.85 235.02,139.63 235.48,139.42 235.94,139.20 236.41,138.99 236.87,138.77 237.34,138.54 237.80,138.32 238.27,138.10 238.73,137.87 239.19,137.64 239.66,137.41 240.12,137.18 240.59,136.95 241.05,136.72 241.52,136.49 241.98,136.25 242.44,136.02 242.91,135.78 243.37,135.54 243.84,135.31 244.30,135.07 244.77,134.83 245.23,134.59 245.69,134.36 246.16,134.12 246.62,133.88 247.09,133.64 247.55,133.41 248.02,133.17 248.48,132.93 248.94,132.70 249.41,132.47 249.87,132.23 250.34,132.00 250.80,131.77 251.26,131.54 251.73,131.31 252.19,131.08 252.66,130.85 253.12,130.63 253.59,130.40 254.05,130.18 254.51,129.96 254.98,129.74 255.44,129.53 255.91,129.31 256.37,129.10 256.84,128.88 257.30,128.67 257.76,128.46 258.23,128.26 258.69,128.05 259.16,127.85 259.62,127.64 260.09,127.44 260.55,127.24 261.01,127.05 261.48,126.85 261.94,126.65 262.41,126.46 262.87,126.27 263.34,126.08 263.80,125.89 264.26,125.70 264.73,125.51 265.19,125.33 265.66,125.14 266.12,124.96 266.58,124.78 267.05,124.59 267.51,124.41 267.98,124.23 268.44,124.05 268.91,123.87 269.37,123.69 269.83,123.51 270.30,123.33 270.76,123.15 271.23,122.97 271.69,122.79 272.16,122.62 272.62,122.44 273.08,122.26 273.55,122.08 274.01,121.90 274.48,121.72 274.94,121.53 275.41,121.35 275.87,121.17 276.33,120.99 276.80,120.80 277.26,120.62 277.73,120.43 278.19,120.25 278.66,120.06 279.12,119.87 279.58,119.69 280.05,119.50 280.51,119.31 280.98,119.12 281.44,118.93 281.90,118.73 282.37,118.54 282.83,118.35 283.30,118.15 283.76,117.96 284.23,117.76 284.69,117.57 285.15,117.37 285.62,117.17 286.08,116.98 286.55,116.78 287.01,116.58 287.48,116.38 287.94,116.18 288.40,115.99 288.40,94.98 287.94,94.79 287.48,94.59 287.01,94.39 286.55,94.19 286.08,93.99 285.62,93.80 285.15,93.60 284.69,93.40 284.23,93.21 283.76,93.01 283.30,92.82 282.83,92.62 282.37,92.43 281.90,92.24 281.44,92.04 280.98,91.85 280.51,91.66 280.05,91.47 279.58,91.28 279.12,91.10 278.66,90.91 278.19,90.72 277.73,90.54 277.26,90.35 276.80,90.17 276.33,89.98 275.87,89.80 275.41,89.62 274.94,89.44 274.48,89.26 274.01,89.07 273.55,88.89 273.08,88.71 272.62,88.53 272.16,88.36 271.69,88.18 271.23,88.00 270.76,87.82 270.30,87.64 269.83,87.46 269.37,87.28 268.91,87.10 268.44,86.92 267.98,86.74 267.51,86.56 267.05,86.38 266.58,86.19 266.12,86.01 265.66,85.83 265.19,85.64 264.73,85.46 264.26,85.27 263.80,85.08 263.34,84.89 262.87,84.70 262.41,84.51 261.94,84.32 261.48,84.12 261.01,83.93 260.55,83.73 260.09,83.53 259.62,83.33 259.16,83.13 258.69,82.92 258.23,82.72 257.76,82.51 257.30,82.30 256.84,82.09 256.37,81.88 255.91,81.66 255.44,81.44 254.98,81.23 254.51,81.01 254.05,80.79 253.59,80.57 253.12,80.34 252.66,80.12 252.19,79.89 251.73,79.66 251.26,79.43 250.80,79.20 250.34,78.97 249.87,78.74 249.41,78.51 248.94,78.27 248.48,78.04 248.02,77.80 247.55,77.56 247.09,77.33 246.62,77.09 246.16,76.85 245.69,76.61 245.23,76.38 244.77,76.14 244.30,75.90 243.84,75.66 243.37,75.43 242.91,75.19 242.44,74.95 241.98,74.72 241.52,74.48 241.05,74.25 240.59,74.02 240.12,73.79 239.66,73.56 239.19,73.33 238.73,73.10 238.27,72.87 237.80,72.65 237.34,72.43 236.87,72.20 236.41,71.98 235.94,71.77 235.48,71.55 235.02,71.34 234.55,71.12 234.09,70.91 233.62,70.70 233.16,70.50 232.70,70.29 232.23,70.09 231.77,69.89 231.30,69.69 230.84,69.49 230.37,69.30 229.91,69.10 229.45,68.91 228.98,68.72 228.52,68.53 228.05,68.34 227.59,68.16 227.12,67.97 226.66,67.79 226.20,67.61 225.73,67.43 225.27,67.25 224.80,67.07 224.34,66.89 223.87,66.71 223.41,66.53 222.95,66.35 222.48,66.18 222.02,66.00 221.55,65.82 221.09,65.64 220.62,65.46 220.16,65.28 219.70,65.10 219.23,64.92 218.77,64.73 218.30,64.55 217.84,64.36 217.38,64.17 216.91,63.98 216.45,63.79 215.98,63.59 215.52,63.39 215.05,63.19 214.59,62.99 214.13,62.78 213.66,62.57 213.20,62.36 212.73,62.14 212.27,61.92 211.80,61.70 211.34,61.47 210.88,61.24 210.41,61.00 209.95,60.76 209.48,60.51 209.02,60.27 208.55,60.01 208.09,59.75 207.63,59.49 207.16,59.22 206.70,58.95 206.23,58.68 205.77,58.40 205.30,58.11 204.84,57.82 204.38,57.53 203.91,57.23 203.45,56.92 202.98,56.62 202.52,56.31 202.06,55.99 201.59,55.67 201.13,55.35 200.66,55.02 200.20,54.69 199.73,54.35 199.27,54.02 198.81,53.67 198.34,53.33 197.88,52.98 197.41,52.64 196.95,52.28 196.48,51.93 196.02,51.57 195.56,51.21 195.09,50.86 194.63,50.49 194.16,50.13 193.70,49.77 193.23,49.41 192.77,49.04 192.31,48.68 191.84,48.31 191.38,47.95 190.91,47.59 190.45,47.23 189.98,46.86 189.52,46.50 189.06,46.15 188.59,45.79 188.13,45.44 187.66,45.08 187.20,44.73 186.74,44.39 186.27,44.04 185.81,43.70 185.34,43.37 184.88,43.03 184.41,42.70 183.95,42.38 183.49,42.06 183.02,41.74 182.56,41.43 182.09,41.12 181.63,40.82 181.16,40.52 180.70,40.23 180.24,39.94 179.77,39.66 179.31,39.38 178.84,39.11 178.38,38.85 177.91,38.59 177.45,38.33 176.99,38.09 176.52,37.85 176.06,37.61 175.59,37.38 175.13,37.16 174.66,36.94 174.20,36.73 173.74,36.52 173.27,36.32 172.81,36.13 172.34,35.94 171.88,35.76 171.42,35.58 170.95,35.41 170.49,35.25 170.02,35.09 169.56,34.93 169.09,34.79 168.63,34.64 168.17,34.50 167.70,34.37 167.24,34.24 166.77,34.12 166.31,34.00 165.84,33.88 165.38,33.77 164.92,33.66 164.45,33.56 163.99,33.46 163.52,33.37 163.06,33.27 162.59,33.18 162.13,33.10 161.67,33.02 161.20,32.94 160.74,32.86 160.27,32.78 159.81,32.71 159.34,32.64 158.88,32.57 158.42,32.51 157.95,32.44 157.49,32.38 157.02,32.31 156.56,32.25 156.10,32.19 155.63,32.13 155.17,32.08 154.70,32.02 154.24,31.96 153.77,31.91 153.31,31.85 152.85,31.80 152.38,31.75 151.92,31.69 151.45,31.64 150.99,31.59 150.52,31.54 150.06,31.48 149.60,31.43 149.13,31.38 148.67,31.33 148.20,31.28 147.74,31.23 147.27,31.18 146.81,31.13 146.35,31.09 145.88,31.04 145.42,30.99 144.95,30.95 144.49,30.91 144.02,30.86 143.56,30.82 143.10,30.78 142.63,30.75 142.17,30.71 141.70,30.68 141.24,30.64 140.78,30.61 140.31,30.59 139.85,30.56 139.38,30.54 138.92,30.52 138.45,30.51 137.99,30.50 137.53,30.49 137.06,30.48 136.60,30.48 136.13,30.48 135.67,30.49 135.20,30.50 134.74,30.52 134.28,30.54 133.81,30.57 133.35,30.60 132.88,30.64 132.42,30.68 131.95,30.73 131.49,30.78 131.03,30.84 130.56,30.91 130.10,30.98 129.63,31.06 129.17,31.14 128.70,31.24 128.24,31.33 127.78,31.44 127.31,31.55 126.85,31.67 126.38,31.79 125.92,31.92 125.46,32.06 124.99,32.21 124.53,32.36 124.06,32.52 123.60,32.68 123.13,32.85 122.67,33.04 122.21,33.22 121.74,33.41 121.28,33.61 120.81,33.82 120.35,34.03 119.88,34.25 119.42,34.48 118.96,34.71 118.49,34.95 118.03,35.19 117.56,35.44 117.10,35.69 116.63,35.96 116.17,36.22 115.71,36.49 115.24,36.77 114.78,37.05 114.31,37.34 113.85,37.63 113.38,37.93 112.92,38.23 112.46,38.53 111.99,38.84 111.53,39.16 111.06,39.47 110.60,39.80 110.14,40.12 109.67,40.45 109.21,40.78 108.74,41.11 108.28,41.45 107.81,41.79 107.35,42.13 106.89,42.48 106.42,42.83 105.96,43.18 105.49,43.53 105.03,43.88 104.56,44.24 104.10,44.59 103.64,44.95 103.17,45.31 102.71,45.67 102.24,46.04 101.78,46.40 101.31,46.77 100.85,47.13 100.39,47.50 99.92,47.87 99.46,48.24 98.99,48.61 98.53,48.98 98.06,49.35 97.60,49.72 97.14,50.10 96.67,50.47 96.21,50.84 95.74,51.22 95.28,51.59 94.82,51.97 94.35,52.34 93.89,52.72 93.42,53.09 92.96,53.47 92.49,53.84 92.03,54.22 91.57,54.60 91.10,54.97 90.64,55.35 90.17,55.73 89.71,56.11 89.24,56.48 88.78,56.86 88.32,57.24 87.85,57.62 87.39,58.00 86.92,58.37 86.46,58.75 85.99,59.13 85.53,59.51 85.07,59.89 84.60,60.27 84.14,60.65 83.67,61.03 83.21,61.41 82.74,61.79 82.28,62.17 81.82,62.55 81.35,62.93 80.89,63.31 80.42,63.69 79.96,64.07 79.50,64.45 79.03,64.83 78.57,65.21 78.10,65.60 77.64,65.98 77.17,66.36 76.71,66.74 76.25,67.12 75.78,67.51 75.32,67.89 74.85,68.27 74.39,68.65 73.92,69.04 73.46,69.42 73.00,69.80 72.53,70.19 72.07,70.57 71.60,70.95 71.14,71.34 70.67,71.72 70.21,72.10 69.75,72.49 69.28,72.87 68.82,73.25 68.35,73.64 67.89,74.02 67.42,74.41 66.96,74.79 66.50,75.17 66.03,75.56 65.57,75.94 65.10,76.32 64.64,76.70 64.18,77.09 63.71,77.47 63.25,77.85 62.78,78.23 62.32,78.62 61.85,79.00 61.39,79.38 60.93,79.76 60.46,80.14 60.00,80.52 59.53,80.90 59.07,81.28 58.60,81.65 58.14,82.03 57.68,82.41 57.21,82.78 56.75,83.16 56.28,83.53 55.82,83.90 55.35,84.27 54.89,84.65 54.43,85.01 53.96,85.38 53.50,85.75 53.03,86.11 52.57,86.48 52.10,86.84 51.64,87.20 51.18,87.56 51.18,123.41' fill='#E69F00' fill-opacity='1' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\\n  <\\/g>\\n <\\/g>\\n<\\/svg>\",\"js\":null,\"uid\":\"svg_991d17ad_3cb2_4439_aa43_4755fa937d54\",\"ratio\":2.333333333333333,\"settings\":{\"tooltip\":{\"css\":\".tooltip_SVGID_ { padding:5px;background:black;color:white;border-radius:2px;text-align:left; ; position:absolute;pointer-events:none;z-index:999;}\",\"placement\":\"doc\",\"opacity\":0.9,\"offx\":10,\"offy\":10,\"use_cursor_pos\":true,\"use_fill\":false,\"use_stroke\":false,\"delay_over\":200,\"delay_out\":500},\"hover\":{\"css\":\".hover_data_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_data_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_data_SVGID_ { fill:orange;stroke:black; }\\nline.hover_data_SVGID_, polyline.hover_data_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_data_SVGID_, polygon.hover_data_SVGID_, path.hover_data_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_data_SVGID_ { stroke:orange; }\",\"reactive\":true,\"nearest_distance\":null},\"hover_inv\":{\"css\":\"\"},\"hover_key\":{\"css\":\".hover_key_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_key_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_key_SVGID_ { fill:orange;stroke:black; }\\nline.hover_key_SVGID_, polyline.hover_key_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_key_SVGID_, polygon.hover_key_SVGID_, path.hover_key_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_key_SVGID_ { stroke:orange; }\",\"reactive\":true},\"hover_theme\":{\"css\":\".hover_theme_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_theme_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_theme_SVGID_ { fill:orange;stroke:black; }\\nline.hover_theme_SVGID_, polyline.hover_theme_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_theme_SVGID_, polygon.hover_theme_SVGID_, path.hover_theme_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_theme_SVGID_ { stroke:orange; }\",\"reactive\":true},\"select\":{\"css\":\".select_data_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_data_SVGID_ { stroke:none;fill:red; }\\ncircle.select_data_SVGID_ { fill:red;stroke:black; }\\nline.select_data_SVGID_, polyline.select_data_SVGID_ { fill:none;stroke:red; }\\nrect.select_data_SVGID_, polygon.select_data_SVGID_, path.select_data_SVGID_ { fill:red;stroke:none; }\\nimage.select_data_SVGID_ { stroke:red; }\",\"type\":\"multiple\",\"only_shiny\":true,\"selected\":[]},\"select_inv\":{\"css\":\"\"},\"select_key\":{\"css\":\".select_key_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_key_SVGID_ { stroke:none;fill:red; }\\ncircle.select_key_SVGID_ { fill:red;stroke:black; }\\nline.select_key_SVGID_, polyline.select_key_SVGID_ { fill:none;stroke:red; }\\nrect.select_key_SVGID_, polygon.select_key_SVGID_, path.select_key_SVGID_ { fill:red;stroke:none; }\\nimage.select_key_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"select_theme\":{\"css\":\".select_theme_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_theme_SVGID_ { stroke:none;fill:red; }\\ncircle.select_theme_SVGID_ { fill:red;stroke:black; }\\nline.select_theme_SVGID_, polyline.select_theme_SVGID_ { fill:none;stroke:red; }\\nrect.select_theme_SVGID_, polygon.select_theme_SVGID_, path.select_theme_SVGID_ { fill:red;stroke:none; }\\nimage.select_theme_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"zoom\":{\"min\":1,\"max\":1,\"duration\":300},\"toolbar\":{\"position\":\"topright\",\"pngname\":\"diagram\",\"tooltips\":null,\"hidden\":[],\"delay_over\":200,\"delay_out\":500},\"sizing\":{\"rescale\":true,\"width\":1}}},\"evals\":[],\"jsHooks\":[]}"]}]}]},{"name":"WidgetContainer","attribs":{"key":"a3eb721c9680d82d345416970b0fd62f"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"id":"htmlwidget-75b97376252ea7866c06","style":{"width":"100%","height":"338px"},"className":"girafe html-widget html-fill-item-overflow-hidden html-fill-item"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-75b97376252ea7866c06"},"children":["{\"x\":{\"html\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\\n<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='ggiraph-svg' role='img' id='svg_8e3a468a_4780_49e3_9c5b_18f0aec38183' viewBox='0 0 504 216'>\\n <defs id='svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_defs'>\\n  <clipPath id='svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_c1'>\\n   <rect x='0' y='0' width='504' height='216'/>\\n  <\\/clipPath>\\n  <clipPath id='svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_c2'>\\n   <rect x='10.51' y='5.48' width='488.01' height='200.01'/>\\n  <\\/clipPath>\\n <\\/defs>\\n <g id='svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_rootg' class='ggiraph-svg-rootg'>\\n  <g clip-path='url(#svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_c1)'>\\n   <rect x='0' y='0' width='504' height='216' fill='#FFFFFF' fill-opacity='1' stroke='#FFFFFF' stroke-opacity='1' stroke-width='0.75' stroke-linejoin='round' stroke-linecap='round' class='ggiraph-svg-bg'/>\\n  <\\/g>\\n  <g clip-path='url(#svg_8e3a468a_4780_49e3_9c5b_18f0aec38183_c2)'>\\n   <polygon points='32.69,109.45 33.20,109.50 33.70,109.54 34.21,109.58 34.72,109.62 35.22,109.66 35.73,109.70 36.24,109.73 36.74,109.77 37.25,109.80 37.76,109.83 38.26,109.85 38.77,109.88 39.27,109.91 39.78,109.93 40.29,109.95 40.79,109.97 41.30,109.99 41.81,110.00 42.31,110.02 42.82,110.03 43.33,110.05 43.83,110.06 44.34,110.07 44.85,110.07 45.35,110.08 45.86,110.09 46.37,110.09 46.87,110.10 47.38,110.10 47.88,110.10 48.39,110.10 48.90,110.10 49.40,110.10 49.91,110.10 50.42,110.10 50.92,110.10 51.43,110.10 51.94,110.10 52.44,110.09 52.95,110.09 53.46,110.09 53.96,110.09 54.47,110.09 54.97,110.09 55.48,110.09 55.99,110.09 56.49,110.09 57.00,110.10 57.51,110.11 58.01,110.11 58.52,110.13 59.03,110.14 59.53,110.16 60.04,110.17 60.55,110.20 61.05,110.22 61.56,110.25 62.07,110.29 62.57,110.32 63.08,110.37 63.58,110.42 64.09,110.47 64.60,110.53 65.10,110.60 65.61,110.67 66.12,110.75 66.62,110.83 67.13,110.93 67.64,111.03 68.14,111.14 68.65,111.26 69.16,111.39 69.66,111.53 70.17,111.67 70.67,111.83 71.18,112.00 71.69,112.18 72.19,112.37 72.70,112.57 73.21,112.78 73.71,113.01 74.22,113.25 74.73,113.49 75.23,113.76 75.74,114.03 76.25,114.32 76.75,114.62 77.26,114.94 77.76,115.27 78.27,115.61 78.78,115.97 79.28,116.34 79.79,116.72 80.30,117.12 80.80,117.53 81.31,117.96 81.82,118.40 82.32,118.85 82.83,119.32 83.34,119.80 83.84,120.29 84.35,120.80 84.86,121.32 85.36,121.85 85.87,122.39 86.37,122.94 86.88,123.51 87.39,124.08 87.89,124.67 88.40,125.27 88.91,125.87 89.41,126.49 89.92,127.11 90.43,127.74 90.93,128.38 91.44,129.02 91.95,129.68 92.45,130.33 92.96,130.99 93.46,131.66 93.97,132.33 94.48,133.00 94.98,133.68 95.49,134.36 96.00,135.03 96.50,135.71 97.01,136.39 97.52,137.07 98.02,137.75 98.53,138.42 99.04,139.10 99.54,139.77 100.05,140.43 100.55,141.10 101.06,141.75 101.57,142.41 102.07,143.05 102.58,143.69 103.09,144.33 103.59,144.96 104.10,145.57 104.61,146.19 105.11,146.79 105.62,147.39 106.13,147.98 106.63,148.56 107.14,149.13 107.65,149.69 108.15,150.24 108.66,150.78 109.16,151.32 109.67,151.84 110.18,152.35 110.68,152.86 111.19,153.36 111.70,153.84 112.20,154.32 112.71,154.79 113.22,155.25 113.72,155.70 114.23,156.15 114.74,156.58 115.24,157.01 115.75,157.43 116.25,157.84 116.76,158.25 117.27,158.65 117.77,159.04 118.28,159.43 118.79,159.81 119.29,160.19 119.80,160.56 120.31,160.93 120.81,161.30 121.32,161.66 121.83,162.02 122.33,162.38 122.84,162.73 123.35,163.08 123.85,163.43 124.36,163.78 124.86,164.13 125.37,164.48 125.88,164.83 126.38,165.18 126.89,165.53 127.40,165.88 127.90,166.23 128.41,166.58 128.92,166.93 129.42,167.29 129.93,167.64 130.44,168.00 130.94,168.36 131.45,168.72 131.95,169.08 132.46,169.44 132.97,169.80 133.47,170.16 133.98,170.53 134.49,170.89 134.99,171.26 135.50,171.62 136.01,171.99 136.51,172.35 137.02,172.71 137.53,173.07 138.03,173.43 138.54,173.79 139.04,174.14 139.55,174.49 140.06,174.84 140.56,175.18 141.07,175.51 141.58,175.84 142.08,176.17 142.59,176.49 143.10,176.79 143.60,177.09 144.11,177.39 144.62,177.67 145.12,177.94 145.63,178.20 146.14,178.45 146.64,178.69 147.15,178.92 147.65,179.13 148.16,179.33 148.67,179.52 149.17,179.68 149.68,179.84 150.19,179.98 150.69,180.10 151.20,180.21 151.71,180.30 152.21,180.37 152.72,180.43 153.23,180.47 153.73,180.49 154.24,180.49 154.74,180.48 155.25,180.44 155.76,180.39 156.26,180.32 156.77,180.23 157.28,180.12 157.78,180.00 158.29,179.85 158.80,179.70 159.30,179.52 159.81,179.32 160.32,179.11 160.82,178.89 161.33,178.64 161.83,178.39 162.34,178.11 162.85,177.82 163.35,177.52 163.86,177.21 164.37,176.88 164.87,176.54 165.38,176.19 165.89,175.83 166.39,175.45 166.90,175.07 167.41,174.68 167.91,174.28 168.42,173.88 168.93,173.46 169.43,173.04 169.94,172.62 170.44,172.19 170.95,171.75 171.46,171.32 171.96,170.88 172.47,170.43 172.98,169.99 173.48,169.54 173.99,169.10 174.50,168.65 175.00,168.20 175.51,167.76 176.02,167.31 176.52,166.87 177.03,166.43 177.53,165.99 178.04,165.55 178.55,165.12 179.05,164.69 179.56,164.26 180.07,163.84 180.57,163.42 181.08,163.00 181.59,162.58 182.09,162.17 182.60,161.76 183.11,161.36 183.61,160.96 184.12,160.56 184.63,160.16 185.13,159.77 185.64,159.38 186.14,158.99 186.65,158.61 187.16,158.22 187.66,157.84 188.17,157.46 188.68,157.08 189.18,156.70 189.69,156.32 190.20,155.94 190.70,155.55 191.21,155.17 191.72,154.79 192.22,154.41 192.73,154.02 193.23,153.63 193.74,153.24 194.25,152.85 194.75,152.45 195.26,152.06 195.77,151.65 196.27,151.25 196.78,150.84 197.29,150.43 197.79,150.01 198.30,149.59 198.81,149.16 199.31,148.73 199.82,148.30 200.32,147.86 200.83,147.42 201.34,146.98 201.84,146.53 202.35,146.07 202.86,145.62 203.36,145.15 203.87,144.69 204.38,144.22 204.88,143.75 205.39,143.28 205.90,142.81 206.40,142.33 206.91,141.85 207.42,141.37 207.92,140.89 208.43,140.41 208.93,139.93 209.44,139.45 209.95,138.97 210.45,138.49 210.96,138.01 211.47,137.54 211.97,137.07 212.48,136.60 212.99,136.13 213.49,135.67 214.00,135.22 214.51,134.76 215.01,134.32 215.52,133.87 216.02,133.44 216.53,133.01 217.04,132.59 217.54,132.17 218.05,131.76 218.56,131.36 219.06,130.97 219.57,130.59 220.08,130.21 220.58,129.84 221.09,129.49 221.60,129.14 222.10,128.80 222.61,128.47 223.11,128.15 223.62,127.83 224.13,127.53 224.63,127.24 225.14,126.96 225.65,126.68 226.15,126.42 226.66,126.16 227.17,125.92 227.67,125.68 228.18,125.46 228.69,125.24 229.19,125.03 229.70,124.83 230.21,124.63 230.71,124.45 231.22,124.27 231.72,124.10 232.23,123.94 232.74,123.78 233.24,123.63 233.75,123.49 234.26,123.35 234.76,123.21 235.27,123.09 235.78,122.96 236.28,122.85 236.79,122.73 237.30,122.62 237.80,122.51 238.31,122.41 238.81,122.30 239.32,122.20 239.83,122.10 240.33,122.01 240.84,121.91 241.35,121.82 241.85,121.72 242.36,121.63 242.87,121.53 243.37,121.44 243.88,121.34 244.39,121.24 244.89,121.15 245.40,121.05 245.91,120.94 246.41,120.84 246.92,120.74 247.42,120.63 247.93,120.52 248.44,120.40 248.94,120.29 249.45,120.17 249.96,120.05 250.46,119.92 250.97,119.79 251.48,119.66 251.98,119.53 252.49,119.39 253.00,119.25 253.50,119.11 254.01,118.96 254.51,118.81 255.02,118.65 255.53,118.50 256.03,118.34 256.54,118.18 257.05,118.01 257.55,117.85 258.06,117.68 258.57,117.51 259.07,117.33 259.58,117.16 260.09,116.98 260.59,116.80 261.10,116.62 261.60,116.44 262.11,116.26 262.62,116.08 263.12,115.90 263.63,115.72 264.14,115.54 264.64,115.36 265.15,115.18 265.66,115.00 266.16,114.82 266.67,114.65 267.18,114.47 267.68,114.30 268.19,114.13 268.70,113.96 269.20,113.79 269.71,113.63 270.21,113.47 270.72,113.31 271.23,113.15 271.73,113.00 272.24,112.85 272.75,112.70 273.25,112.56 273.76,112.42 274.27,112.28 274.77,112.15 275.28,112.02 275.79,111.90 276.29,111.77 276.80,111.65 277.30,111.54 277.81,111.43 278.32,111.32 278.82,111.21 279.33,111.11 279.84,111.02 280.34,110.92 280.85,110.83 281.36,110.74 281.86,110.65 282.37,110.57 282.88,110.49 283.38,110.41 283.89,110.33 284.40,110.26 284.90,110.19 285.41,110.12 285.91,110.05 286.42,109.98 286.93,109.92 287.43,109.85 287.94,109.79 288.45,109.73 288.95,109.67 289.46,109.61 289.97,109.55 290.47,109.49 290.98,109.43 291.49,109.37 291.49,101.60 290.98,101.54 290.47,101.48 289.97,101.42 289.46,101.36 288.95,101.30 288.45,101.24 287.94,101.18 287.43,101.12 286.93,101.05 286.42,100.99 285.91,100.92 285.41,100.85 284.90,100.78 284.40,100.71 283.89,100.64 283.38,100.56 282.88,100.48 282.37,100.40 281.86,100.32 281.36,100.23 280.85,100.14 280.34,100.05 279.84,99.96 279.33,99.86 278.82,99.76 278.32,99.65 277.81,99.54 277.30,99.43 276.80,99.32 276.29,99.20 275.79,99.08 275.28,98.95 274.77,98.82 274.27,98.69 273.76,98.55 273.25,98.41 272.75,98.27 272.24,98.12 271.73,97.97 271.23,97.82 270.72,97.66 270.21,97.51 269.71,97.34 269.20,97.18 268.70,97.01 268.19,96.84 267.68,96.67 267.18,96.50 266.67,96.32 266.16,96.15 265.66,95.97 265.15,95.79 264.64,95.61 264.14,95.43 263.63,95.25 263.12,95.07 262.62,94.89 262.11,94.71 261.60,94.53 261.10,94.35 260.59,94.17 260.09,93.99 259.58,93.81 259.07,93.64 258.57,93.47 258.06,93.29 257.55,93.13 257.05,92.96 256.54,92.79 256.03,92.63 255.53,92.47 255.02,92.32 254.51,92.16 254.01,92.01 253.50,91.87 253.00,91.72 252.49,91.58 251.98,91.44 251.48,91.31 250.97,91.18 250.46,91.05 249.96,90.92 249.45,90.80 248.94,90.68 248.44,90.57 247.93,90.45 247.42,90.34 246.92,90.24 246.41,90.13 245.91,90.03 245.40,89.92 244.89,89.82 244.39,89.73 243.88,89.63 243.37,89.53 242.87,89.44 242.36,89.34 241.85,89.25 241.35,89.15 240.84,89.06 240.33,88.96 239.83,88.87 239.32,88.77 238.81,88.67 238.31,88.56 237.80,88.46 237.30,88.35 236.79,88.24 236.28,88.13 235.78,88.01 235.27,87.88 234.76,87.76 234.26,87.62 233.75,87.48 233.24,87.34 232.74,87.19 232.23,87.03 231.72,86.87 231.22,86.70 230.71,86.52 230.21,86.34 229.70,86.15 229.19,85.94 228.69,85.73 228.18,85.52 227.67,85.29 227.17,85.05 226.66,84.81 226.15,84.55 225.65,84.29 225.14,84.02 224.63,83.73 224.13,83.44 223.62,83.14 223.11,82.82 222.61,82.50 222.10,82.18 221.60,81.83 221.09,81.48 220.58,81.13 220.08,80.76 219.57,80.38 219.06,80.00 218.56,79.61 218.05,79.21 217.54,78.80 217.04,78.38 216.53,77.96 216.02,77.53 215.52,77.10 215.01,76.66 214.51,76.21 214.00,75.76 213.49,75.30 212.99,74.84 212.48,74.37 211.97,73.90 211.47,73.43 210.96,72.96 210.45,72.48 209.95,72.00 209.44,71.52 208.93,71.04 208.43,70.56 207.92,70.08 207.42,69.60 206.91,69.12 206.40,68.64 205.90,68.16 205.39,67.69 204.88,67.22 204.38,66.75 203.87,66.28 203.36,65.82 202.86,65.36 202.35,64.90 201.84,64.44 201.34,63.99 200.83,63.55 200.32,63.11 199.82,62.67 199.31,62.24 198.81,61.81 198.30,61.38 197.79,60.96 197.29,60.54 196.78,60.13 196.27,59.72 195.77,59.32 195.26,58.91 194.75,58.52 194.25,58.12 193.74,57.73 193.23,57.34 192.73,56.95 192.22,56.56 191.72,56.18 191.21,55.80 190.70,55.42 190.20,55.04 189.69,54.65 189.18,54.27 188.68,53.89 188.17,53.51 187.66,53.13 187.16,52.75 186.65,52.36 186.14,51.98 185.64,51.59 185.13,51.20 184.63,50.81 184.12,50.41 183.61,50.01 183.11,49.61 182.60,49.21 182.09,48.80 181.59,48.39 181.08,47.97 180.57,47.55 180.07,47.13 179.56,46.71 179.05,46.28 178.55,45.85 178.04,45.42 177.53,44.98 177.03,44.54 176.52,44.10 176.02,43.66 175.51,43.21 175.00,42.77 174.50,42.32 173.99,41.87 173.48,41.43 172.98,40.98 172.47,40.54 171.96,40.10 171.46,39.65 170.95,39.22 170.44,38.78 169.94,38.35 169.43,37.93 168.93,37.51 168.42,37.10 167.91,36.69 167.41,36.29 166.90,35.90 166.39,35.52 165.89,35.15 165.38,34.78 164.87,34.43 164.37,34.09 163.86,33.76 163.35,33.45 162.85,33.15 162.34,32.86 161.83,32.59 161.33,32.33 160.82,32.08 160.32,31.86 159.81,31.65 159.30,31.45 158.80,31.27 158.29,31.12 157.78,30.97 157.28,30.85 156.77,30.74 156.26,30.65 155.76,30.58 155.25,30.53 154.74,30.50 154.24,30.48 153.73,30.48 153.23,30.50 152.72,30.54 152.21,30.60 151.71,30.67 151.20,30.76 150.69,30.87 150.19,30.99 149.68,31.13 149.17,31.29 148.67,31.45 148.16,31.64 147.65,31.84 147.15,32.05 146.64,32.28 146.14,32.52 145.63,32.77 145.12,33.03 144.62,33.30 144.11,33.58 143.60,33.88 143.10,34.18 142.59,34.49 142.08,34.80 141.58,35.13 141.07,35.46 140.56,35.79 140.06,36.13 139.55,36.48 139.04,36.83 138.54,37.18 138.03,37.54 137.53,37.90 137.02,38.26 136.51,38.62 136.01,38.99 135.50,39.35 134.99,39.71 134.49,40.08 133.98,40.44 133.47,40.81 132.97,41.17 132.46,41.53 131.95,41.90 131.45,42.26 130.94,42.61 130.44,42.97 129.93,43.33 129.42,43.68 128.92,44.04 128.41,44.39 127.90,44.74 127.40,45.09 126.89,45.44 126.38,45.79 125.88,46.14 125.37,46.49 124.86,46.84 124.36,47.19 123.85,47.54 123.35,47.89 122.84,48.24 122.33,48.59 121.83,48.95 121.32,49.31 120.81,49.67 120.31,50.04 119.80,50.41 119.29,50.78 118.79,51.16 118.28,51.54 117.77,51.93 117.27,52.32 116.76,52.72 116.25,53.13 115.75,53.54 115.24,53.96 114.74,54.39 114.23,54.82 113.72,55.27 113.22,55.72 112.71,56.18 112.20,56.65 111.70,57.13 111.19,57.61 110.68,58.11 110.18,58.62 109.67,59.13 109.16,59.65 108.66,60.19 108.15,60.73 107.65,61.28 107.14,61.85 106.63,62.41 106.13,62.99 105.62,63.58 105.11,64.18 104.61,64.78 104.10,65.40 103.59,66.01 103.09,66.64 102.58,67.28 102.07,67.92 101.57,68.57 101.06,69.22 100.55,69.87 100.05,70.54 99.54,71.20 99.04,71.87 98.53,72.55 98.02,73.22 97.52,73.90 97.01,74.58 96.50,75.26 96.00,75.94 95.49,76.61 94.98,77.29 94.48,77.97 93.97,78.64 93.46,79.31 92.96,79.98 92.45,80.64 91.95,81.30 91.44,81.95 90.93,82.59 90.43,83.23 89.92,83.86 89.41,84.48 88.91,85.10 88.40,85.70 87.89,86.30 87.39,86.89 86.88,87.46 86.37,88.03 85.87,88.58 85.36,89.12 84.86,89.65 84.35,90.17 83.84,90.68 83.34,91.17 82.83,91.65 82.32,92.12 81.82,92.57 81.31,93.01 80.80,93.44 80.30,93.85 79.79,94.25 79.28,94.63 78.78,95.00 78.27,95.36 77.76,95.70 77.26,96.03 76.75,96.35 76.25,96.65 75.74,96.94 75.23,97.21 74.73,97.48 74.22,97.73 73.71,97.96 73.21,98.19 72.70,98.40 72.19,98.60 71.69,98.79 71.18,98.97 70.67,99.14 70.17,99.30 69.66,99.44 69.16,99.58 68.65,99.71 68.14,99.83 67.64,99.94 67.13,100.04 66.62,100.14 66.12,100.22 65.61,100.30 65.10,100.37 64.60,100.44 64.09,100.50 63.58,100.55 63.08,100.60 62.57,100.65 62.07,100.68 61.56,100.72 61.05,100.75 60.55,100.77 60.04,100.80 59.53,100.82 59.03,100.83 58.52,100.85 58.01,100.86 57.51,100.86 57.00,100.87 56.49,100.88 55.99,100.88 55.48,100.88 54.97,100.88 54.47,100.88 53.96,100.88 53.46,100.88 52.95,100.88 52.44,100.88 51.94,100.88 51.43,100.87 50.92,100.87 50.42,100.87 49.91,100.87 49.40,100.87 48.90,100.87 48.39,100.87 47.88,100.87 47.38,100.87 46.87,100.87 46.37,100.88 45.86,100.88 45.35,100.89 44.85,100.90 44.34,100.90 43.83,100.91 43.33,100.92 42.82,100.94 42.31,100.95 41.81,100.97 41.30,100.98 40.79,101.00 40.29,101.02 39.78,101.04 39.27,101.07 38.77,101.09 38.26,101.12 37.76,101.14 37.25,101.17 36.74,101.21 36.24,101.24 35.73,101.27 35.22,101.31 34.72,101.35 34.21,101.39 33.70,101.43 33.20,101.47 32.69,101.52 32.69,109.45' fill='#0072B2' fill-opacity='1' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\\n  <\\/g>\\n <\\/g>\\n<\\/svg>\",\"js\":null,\"uid\":\"svg_8e3a468a_4780_49e3_9c5b_18f0aec38183\",\"ratio\":2.333333333333333,\"settings\":{\"tooltip\":{\"css\":\".tooltip_SVGID_ { padding:5px;background:black;color:white;border-radius:2px;text-align:left; ; position:absolute;pointer-events:none;z-index:999;}\",\"placement\":\"doc\",\"opacity\":0.9,\"offx\":10,\"offy\":10,\"use_cursor_pos\":true,\"use_fill\":false,\"use_stroke\":false,\"delay_over\":200,\"delay_out\":500},\"hover\":{\"css\":\".hover_data_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_data_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_data_SVGID_ { fill:orange;stroke:black; }\\nline.hover_data_SVGID_, polyline.hover_data_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_data_SVGID_, polygon.hover_data_SVGID_, path.hover_data_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_data_SVGID_ { stroke:orange; }\",\"reactive\":true,\"nearest_distance\":null},\"hover_inv\":{\"css\":\"\"},\"hover_key\":{\"css\":\".hover_key_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_key_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_key_SVGID_ { fill:orange;stroke:black; }\\nline.hover_key_SVGID_, polyline.hover_key_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_key_SVGID_, polygon.hover_key_SVGID_, path.hover_key_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_key_SVGID_ { stroke:orange; }\",\"reactive\":true},\"hover_theme\":{\"css\":\".hover_theme_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_theme_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_theme_SVGID_ { fill:orange;stroke:black; }\\nline.hover_theme_SVGID_, polyline.hover_theme_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_theme_SVGID_, polygon.hover_theme_SVGID_, path.hover_theme_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_theme_SVGID_ { stroke:orange; }\",\"reactive\":true},\"select\":{\"css\":\".select_data_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_data_SVGID_ { stroke:none;fill:red; }\\ncircle.select_data_SVGID_ { fill:red;stroke:black; }\\nline.select_data_SVGID_, polyline.select_data_SVGID_ { fill:none;stroke:red; }\\nrect.select_data_SVGID_, polygon.select_data_SVGID_, path.select_data_SVGID_ { fill:red;stroke:none; }\\nimage.select_data_SVGID_ { stroke:red; }\",\"type\":\"multiple\",\"only_shiny\":true,\"selected\":[]},\"select_inv\":{\"css\":\"\"},\"select_key\":{\"css\":\".select_key_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_key_SVGID_ { stroke:none;fill:red; }\\ncircle.select_key_SVGID_ { fill:red;stroke:black; }\\nline.select_key_SVGID_, polyline.select_key_SVGID_ { fill:none;stroke:red; }\\nrect.select_key_SVGID_, polygon.select_key_SVGID_, path.select_key_SVGID_ { fill:red;stroke:none; }\\nimage.select_key_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"select_theme\":{\"css\":\".select_theme_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_theme_SVGID_ { stroke:none;fill:red; }\\ncircle.select_theme_SVGID_ { fill:red;stroke:black; }\\nline.select_theme_SVGID_, polyline.select_theme_SVGID_ { fill:none;stroke:red; }\\nrect.select_theme_SVGID_, polygon.select_theme_SVGID_, path.select_theme_SVGID_ { fill:red;stroke:none; }\\nimage.select_theme_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"zoom\":{\"min\":1,\"max\":1,\"duration\":300},\"toolbar\":{\"position\":\"topright\",\"pngname\":\"diagram\",\"tooltips\":null,\"hidden\":[],\"delay_over\":200,\"delay_out\":500},\"sizing\":{\"rescale\":true,\"width\":1}}},\"evals\":[],\"jsHooks\":[]}"]}]}]},{"name":"WidgetContainer","attribs":{"key":"d784e8ad7e7573ef5aac9f60caab78b3"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"id":"htmlwidget-0fa2adc5503e4d3eab90","style":{"width":"100%","height":"338px"},"className":"girafe html-widget html-fill-item-overflow-hidden html-fill-item"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-0fa2adc5503e4d3eab90"},"children":["{\"x\":{\"html\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\\n<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='ggiraph-svg' role='img' id='svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7' viewBox='0 0 504 216'>\\n <defs id='svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_defs'>\\n  <clipPath id='svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_c1'>\\n   <rect x='0' y='0' width='504' height='216'/>\\n  <\\/clipPath>\\n  <clipPath id='svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_c2'>\\n   <rect x='10.51' y='5.48' width='488.01' height='200.01'/>\\n  <\\/clipPath>\\n <\\/defs>\\n <g id='svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_rootg' class='ggiraph-svg-rootg'>\\n  <g clip-path='url(#svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_c1)'>\\n   <rect x='0' y='0' width='504' height='216' fill='#FFFFFF' fill-opacity='1' stroke='#FFFFFF' stroke-opacity='1' stroke-width='0.75' stroke-linejoin='round' stroke-linecap='round' class='ggiraph-svg-bg'/>\\n  <\\/g>\\n  <g clip-path='url(#svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7_c2)'>\\n   <polygon points='186.74,112.21 187.30,112.40 187.87,112.60 188.44,112.81 189.00,113.02 189.57,113.23 190.14,113.46 190.70,113.68 191.27,113.91 191.84,114.14 192.40,114.38 192.97,114.62 193.54,114.87 194.10,115.12 194.67,115.37 195.24,115.63 195.80,115.90 196.37,116.17 196.94,116.44 197.50,116.72 198.07,117.01 198.64,117.30 199.20,117.59 199.77,117.89 200.34,118.19 200.90,118.50 201.47,118.81 202.04,119.12 202.60,119.44 203.17,119.77 203.74,120.10 204.30,120.43 204.87,120.76 205.44,121.10 206.00,121.45 206.57,121.80 207.14,122.15 207.70,122.50 208.27,122.86 208.84,123.22 209.40,123.59 209.97,123.95 210.54,124.32 211.10,124.70 211.67,125.07 212.24,125.45 212.81,125.83 213.37,126.22 213.94,126.60 214.51,126.99 215.07,127.38 215.64,127.77 216.21,128.17 216.77,128.56 217.34,128.96 217.91,129.36 218.47,129.76 219.04,130.16 219.61,130.56 220.17,130.97 220.74,131.37 221.31,131.78 221.87,132.18 222.44,132.59 223.01,133.00 223.57,133.41 224.14,133.81 224.71,134.22 225.27,134.63 225.84,135.04 226.41,135.45 226.97,135.86 227.54,136.27 228.11,136.68 228.67,137.09 229.24,137.51 229.81,137.92 230.37,138.33 230.94,138.74 231.51,139.15 232.07,139.57 232.64,139.98 233.21,140.39 233.77,140.80 234.34,141.22 234.91,141.63 235.47,142.05 236.04,142.46 236.61,142.88 237.17,143.30 237.74,143.72 238.31,144.14 238.88,144.56 239.44,144.98 240.01,145.40 240.58,145.82 241.14,146.25 241.71,146.67 242.28,147.10 242.84,147.53 243.41,147.96 243.98,148.40 244.54,148.83 245.11,149.27 245.68,149.70 246.24,150.14 246.81,150.58 247.38,151.03 247.94,151.47 248.51,151.92 249.08,152.37 249.64,152.82 250.21,153.27 250.78,153.73 251.34,154.19 251.91,154.64 252.48,155.10 253.04,155.57 253.61,156.03 254.18,156.50 254.74,156.96 255.31,157.43 255.88,157.90 256.44,158.37 257.01,158.84 257.58,159.31 258.14,159.78 258.71,160.25 259.28,160.73 259.84,161.20 260.41,161.67 260.98,162.14 261.54,162.61 262.11,163.08 262.68,163.55 263.24,164.02 263.81,164.48 264.38,164.95 264.95,165.41 265.51,165.87 266.08,166.32 266.65,166.77 267.21,167.22 267.78,167.67 268.35,168.11 268.91,168.55 269.48,168.98 270.05,169.40 270.61,169.83 271.18,170.24 271.75,170.66 272.31,171.06 272.88,171.46 273.45,171.85 274.01,172.24 274.58,172.62 275.15,172.99 275.71,173.35 276.28,173.71 276.85,174.06 277.41,174.40 277.98,174.73 278.55,175.05 279.11,175.37 279.68,175.68 280.25,175.97 280.81,176.26 281.38,176.54 281.95,176.81 282.51,177.07 283.08,177.32 283.65,177.56 284.21,177.80 284.78,178.02 285.35,178.23 285.91,178.43 286.48,178.63 287.05,178.81 287.61,178.98 288.18,179.15 288.75,179.30 289.31,179.45 289.88,179.58 290.45,179.71 291.01,179.82 291.58,179.93 292.15,180.03 292.72,180.11 293.28,180.19 293.85,180.26 294.42,180.32 294.98,180.37 295.55,180.41 296.12,180.44 296.68,180.47 297.25,180.48 297.82,180.49 298.38,180.49 298.95,180.48 299.52,180.46 300.08,180.43 300.65,180.40 301.22,180.36 301.78,180.31 302.35,180.25 302.92,180.19 303.48,180.12 304.05,180.05 304.62,179.96 305.18,179.87 305.75,179.77 306.32,179.67 306.88,179.56 307.45,179.45 308.02,179.33 308.58,179.21 309.15,179.07 309.72,178.94 310.28,178.80 310.85,178.66 311.42,178.51 311.98,178.36 312.55,178.20 313.12,178.04 313.68,177.88 314.25,177.71 314.82,177.54 315.38,177.37 315.95,177.20 316.52,177.02 317.08,176.85 317.65,176.67 318.22,176.49 318.79,176.31 319.35,176.12 319.92,175.94 320.49,175.76 321.05,175.58 321.62,175.39 322.19,175.21 322.75,175.03 323.32,174.85 323.89,174.67 324.45,174.49 325.02,174.31 325.59,174.14 326.15,173.97 326.72,173.80 327.29,173.63 327.85,173.46 328.42,173.30 328.99,173.14 329.55,172.99 330.12,172.84 330.69,172.69 331.25,172.54 331.82,172.40 332.39,172.27 332.95,172.14 333.52,172.01 334.09,171.89 334.65,171.77 335.22,171.66 335.79,171.55 336.35,171.44 336.92,171.35 337.49,171.25 338.05,171.16 338.62,171.08 339.19,171.00 339.75,170.93 340.32,170.86 340.89,170.80 341.45,170.74 342.02,170.69 342.59,170.64 343.15,170.60 343.72,170.56 344.29,170.53 344.86,170.50 345.42,170.47 345.99,170.46 346.56,170.44 347.12,170.43 347.69,170.42 348.26,170.42 348.82,170.42 349.39,170.43 349.96,170.43 350.52,170.44 351.09,170.46 351.66,170.48 352.22,170.50 352.79,170.52 353.36,170.54 353.92,170.57 354.49,170.60 355.06,170.63 355.62,170.66 356.19,170.69 356.76,170.72 357.32,170.76 357.89,170.79 358.46,170.83 359.02,170.86 359.59,170.90 360.16,170.93 360.72,170.96 361.29,171.00 361.86,171.03 362.42,171.05 362.99,171.08 363.56,171.11 364.12,171.13 364.69,171.15 365.26,171.17 365.82,171.18 366.39,171.19 366.96,171.20 367.52,171.20 368.09,171.20 368.66,171.19 369.22,171.18 369.79,171.17 370.36,171.15 370.92,171.12 371.49,171.09 372.06,171.06 372.63,171.02 373.19,170.97 373.76,170.91 374.33,170.85 374.89,170.78 375.46,170.71 376.03,170.63 376.59,170.54 377.16,170.44 377.73,170.34 378.29,170.22 378.86,170.11 379.43,169.98 379.99,169.84 380.56,169.70 381.13,169.55 381.69,169.39 382.26,169.22 382.83,169.04 383.39,168.86 383.96,168.67 384.53,168.46 385.09,168.25 385.66,168.03 386.23,167.81 386.79,167.57 387.36,167.33 387.93,167.07 388.49,166.81 389.06,166.54 389.63,166.26 390.19,165.98 390.76,165.68 391.33,165.38 391.89,165.07 392.46,164.75 393.03,164.42 393.59,164.09 394.16,163.75 394.73,163.40 395.29,163.04 395.86,162.68 396.43,162.31 396.99,161.93 397.56,161.55 398.13,161.16 398.70,160.77 399.26,160.36 399.83,159.96 400.40,159.54 400.96,159.13 401.53,158.70 402.10,158.27 402.66,157.84 403.23,157.40 403.80,156.96 404.36,156.52 404.93,156.07 405.50,155.61 406.06,155.16 406.63,154.70 407.20,154.23 407.76,153.77 408.33,153.30 408.90,152.83 409.46,152.36 410.03,151.88 410.60,151.41 411.16,150.93 411.73,150.45 412.30,149.97 412.86,149.49 413.43,149.00 414.00,148.52 414.56,148.04 415.13,147.55 415.70,147.07 416.26,146.58 416.83,146.10 417.40,145.62 417.96,145.13 418.53,144.65 419.10,144.17 419.66,143.68 420.23,143.20 420.80,142.72 421.36,142.24 421.93,141.76 422.50,141.29 423.06,140.81 423.63,140.33 424.20,139.86 424.77,139.39 425.33,138.92 425.90,138.45 426.47,137.98 427.03,137.52 427.60,137.05 428.17,136.59 428.73,136.13 429.30,135.67 429.87,135.22 430.43,134.77 431.00,134.31 431.57,133.87 432.13,133.42 432.70,132.97 433.27,132.53 433.83,132.09 434.40,131.66 434.97,131.22 435.53,130.79 436.10,130.36 436.67,129.93 437.23,129.51 437.80,129.09 438.37,128.67 438.93,128.25 439.50,127.84 440.07,127.43 440.63,127.03 441.20,126.62 441.77,126.23 442.33,125.83 442.90,125.44 443.47,125.05 444.03,124.66 444.60,124.28 445.17,123.91 445.73,123.53 446.30,123.16 446.87,122.80 447.43,122.43 448.00,122.08 448.57,121.72 449.13,121.37 449.70,121.03 450.27,120.69 450.84,120.35 451.40,120.02 451.97,119.70 452.54,119.38 453.10,119.06 453.67,118.75 454.24,118.44 454.80,118.14 455.37,117.84 455.94,117.55 456.50,117.26 457.07,116.98 457.64,116.70 458.20,116.43 458.77,116.16 459.34,115.90 459.90,115.64 460.47,115.39 461.04,115.14 461.60,114.90 462.17,114.67 462.74,114.43 463.30,114.21 463.87,113.99 464.44,113.77 465.00,113.56 465.57,113.35 466.14,113.15 466.70,112.95 467.27,112.76 467.84,112.57 468.40,112.38 468.97,112.20 469.54,112.03 470.10,111.86 470.67,111.69 471.24,111.53 471.80,111.37 472.37,111.22 472.94,111.07 473.50,110.92 474.07,110.78 474.64,110.64 475.20,110.50 475.77,110.37 476.34,110.24 476.34,100.73 475.77,100.60 475.20,100.47 474.64,100.34 474.07,100.20 473.50,100.05 472.94,99.91 472.37,99.75 471.80,99.60 471.24,99.44 470.67,99.28 470.10,99.11 469.54,98.94 468.97,98.77 468.40,98.59 467.84,98.40 467.27,98.22 466.70,98.02 466.14,97.82 465.57,97.62 465.00,97.41 464.44,97.20 463.87,96.99 463.30,96.76 462.74,96.54 462.17,96.31 461.60,96.07 461.04,95.83 460.47,95.58 459.90,95.33 459.34,95.07 458.77,94.81 458.20,94.54 457.64,94.27 457.07,93.99 456.50,93.71 455.94,93.42 455.37,93.13 454.80,92.83 454.24,92.53 453.67,92.22 453.10,91.91 452.54,91.59 451.97,91.27 451.40,90.95 450.84,90.62 450.27,90.28 449.70,89.94 449.13,89.60 448.57,89.25 448.00,88.89 447.43,88.54 446.87,88.17 446.30,87.81 445.73,87.44 445.17,87.06 444.60,86.69 444.03,86.31 443.47,85.92 442.90,85.53 442.33,85.14 441.77,84.74 441.20,84.35 440.63,83.94 440.07,83.54 439.50,83.13 438.93,82.72 438.37,82.30 437.80,81.88 437.23,81.46 436.67,81.04 436.10,80.61 435.53,80.18 434.97,79.75 434.40,79.32 433.83,78.88 433.27,78.44 432.70,78.00 432.13,77.55 431.57,77.10 431.00,76.66 430.43,76.20 429.87,75.75 429.30,75.30 428.73,74.84 428.17,74.38 427.60,73.92 427.03,73.45 426.47,72.99 425.90,72.52 425.33,72.05 424.77,71.58 424.20,71.11 423.63,70.64 423.06,70.16 422.50,69.69 421.93,69.21 421.36,68.73 420.80,68.25 420.23,67.77 419.66,67.29 419.10,66.81 418.53,66.32 417.96,65.84 417.40,65.35 416.83,64.87 416.26,64.39 415.70,63.90 415.13,63.42 414.56,62.93 414.00,62.45 413.43,61.97 412.86,61.48 412.30,61.00 411.73,60.52 411.16,60.04 410.60,59.56 410.03,59.09 409.46,58.61 408.90,58.14 408.33,57.67 407.76,57.20 407.20,56.74 406.63,56.27 406.06,55.81 405.50,55.36 404.93,54.90 404.36,54.45 403.80,54.01 403.23,53.57 402.66,53.13 402.10,52.70 401.53,52.27 400.96,51.85 400.40,51.43 399.83,51.01 399.26,50.61 398.70,50.20 398.13,49.81 397.56,49.42 396.99,49.04 396.43,48.66 395.86,48.29 395.29,47.93 394.73,47.57 394.16,47.22 393.59,46.88 393.03,46.55 392.46,46.22 391.89,45.90 391.33,45.59 390.76,45.29 390.19,44.99 389.63,44.71 389.06,44.43 388.49,44.16 387.93,43.90 387.36,43.65 386.79,43.40 386.23,43.16 385.66,42.94 385.09,42.72 384.53,42.51 383.96,42.31 383.39,42.11 382.83,41.93 382.26,41.75 381.69,41.58 381.13,41.42 380.56,41.27 379.99,41.13 379.43,40.99 378.86,40.86 378.29,40.75 377.73,40.63 377.16,40.53 376.59,40.44 376.03,40.34 375.46,40.26 374.89,40.19 374.33,40.12 373.76,40.06 373.19,40.00 372.63,39.96 372.06,39.91 371.49,39.88 370.92,39.85 370.36,39.82 369.79,39.80 369.22,39.79 368.66,39.78 368.09,39.77 367.52,39.77 366.96,39.77 366.39,39.78 365.82,39.79 365.26,39.80 364.69,39.82 364.12,39.84 363.56,39.86 362.99,39.89 362.42,39.92 361.86,39.94 361.29,39.98 360.72,40.01 360.16,40.04 359.59,40.07 359.02,40.11 358.46,40.14 357.89,40.18 357.32,40.21 356.76,40.25 356.19,40.28 355.62,40.31 355.06,40.34 354.49,40.37 353.92,40.40 353.36,40.43 352.79,40.45 352.22,40.47 351.66,40.49 351.09,40.51 350.52,40.53 349.96,40.54 349.39,40.55 348.82,40.55 348.26,40.55 347.69,40.55 347.12,40.54 346.56,40.53 345.99,40.51 345.42,40.50 344.86,40.47 344.29,40.44 343.72,40.41 343.15,40.37 342.59,40.33 342.02,40.28 341.45,40.23 340.89,40.17 340.32,40.11 339.75,40.04 339.19,39.97 338.62,39.89 338.05,39.81 337.49,39.72 336.92,39.62 336.35,39.53 335.79,39.42 335.22,39.31 334.65,39.20 334.09,39.08 333.52,38.96 332.95,38.83 332.39,38.70 331.82,38.57 331.25,38.43 330.69,38.28 330.12,38.13 329.55,37.98 328.99,37.83 328.42,37.67 327.85,37.51 327.29,37.34 326.72,37.17 326.15,37.00 325.59,36.83 325.02,36.66 324.45,36.48 323.89,36.30 323.32,36.12 322.75,35.94 322.19,35.76 321.62,35.58 321.05,35.40 320.49,35.21 319.92,35.03 319.35,34.85 318.79,34.66 318.22,34.48 317.65,34.30 317.08,34.12 316.52,33.95 315.95,33.77 315.38,33.60 314.82,33.43 314.25,33.26 313.68,33.09 313.12,32.93 312.55,32.77 311.98,32.61 311.42,32.46 310.85,32.31 310.28,32.17 309.72,32.03 309.15,31.90 308.58,31.76 308.02,31.64 307.45,31.52 306.88,31.41 306.32,31.30 305.75,31.20 305.18,31.10 304.62,31.01 304.05,30.93 303.48,30.85 302.92,30.78 302.35,30.72 301.78,30.66 301.22,30.61 300.65,30.57 300.08,30.54 299.52,30.51 298.95,30.49 298.38,30.48 297.82,30.48 297.25,30.49 296.68,30.50 296.12,30.53 295.55,30.56 294.98,30.60 294.42,30.65 293.85,30.71 293.28,30.78 292.72,30.86 292.15,30.95 291.58,31.04 291.01,31.15 290.45,31.26 289.88,31.39 289.31,31.52 288.75,31.67 288.18,31.82 287.61,31.99 287.05,32.16 286.48,32.34 285.91,32.54 285.35,32.74 284.78,32.95 284.21,33.17 283.65,33.41 283.08,33.65 282.51,33.90 281.95,34.16 281.38,34.43 280.81,34.71 280.25,35.00 279.68,35.30 279.11,35.60 278.55,35.92 277.98,36.24 277.41,36.58 276.85,36.91 276.28,37.26 275.71,37.62 275.15,37.98 274.58,38.36 274.01,38.73 273.45,39.12 272.88,39.51 272.31,39.91 271.75,40.32 271.18,40.73 270.61,41.14 270.05,41.57 269.48,41.99 268.91,42.42 268.35,42.86 267.78,43.30 267.21,43.75 266.65,44.20 266.08,44.65 265.51,45.10 264.95,45.56 264.38,46.02 263.81,46.49 263.24,46.95 262.68,47.42 262.11,47.89 261.54,48.36 260.98,48.83 260.41,49.30 259.84,49.77 259.28,50.24 258.71,50.72 258.14,51.19 257.58,51.66 257.01,52.13 256.44,52.60 255.88,53.07 255.31,53.54 254.74,54.01 254.18,54.48 253.61,54.94 253.04,55.40 252.48,55.87 251.91,56.33 251.34,56.79 250.78,57.24 250.21,57.70 249.64,58.15 249.08,58.60 248.51,59.05 247.94,59.50 247.38,59.94 246.81,60.39 246.24,60.83 245.68,61.27 245.11,61.71 244.54,62.14 243.98,62.58 243.41,63.01 242.84,63.44 242.28,63.87 241.71,64.30 241.14,64.72 240.58,65.15 240.01,65.57 239.44,65.99 238.88,66.41 238.31,66.83 237.74,67.25 237.17,67.67 236.61,68.09 236.04,68.51 235.47,68.92 234.91,69.34 234.34,69.75 233.77,70.17 233.21,70.58 232.64,70.99 232.07,71.41 231.51,71.82 230.94,72.23 230.37,72.64 229.81,73.05 229.24,73.47 228.67,73.88 228.11,74.29 227.54,74.70 226.97,75.11 226.41,75.52 225.84,75.93 225.27,76.34 224.71,76.75 224.14,77.16 223.57,77.57 223.01,77.97 222.44,78.38 221.87,78.79 221.31,79.19 220.74,79.60 220.17,80.00 219.61,80.41 219.04,80.81 218.47,81.21 217.91,81.61 217.34,82.01 216.77,82.41 216.21,82.80 215.64,83.20 215.07,83.59 214.51,83.98 213.94,84.37 213.37,84.75 212.81,85.14 212.24,85.52 211.67,85.90 211.10,86.27 210.54,86.65 209.97,87.02 209.40,87.39 208.84,87.75 208.27,88.11 207.70,88.47 207.14,88.82 206.57,89.18 206.00,89.52 205.44,89.87 204.87,90.21 204.30,90.54 203.74,90.87 203.17,91.20 202.60,91.53 202.04,91.85 201.47,92.16 200.90,92.47 200.34,92.78 199.77,93.08 199.20,93.38 198.64,93.67 198.07,93.96 197.50,94.25 196.94,94.53 196.37,94.80 195.80,95.07 195.24,95.34 194.67,95.60 194.10,95.85 193.54,96.10 192.97,96.35 192.40,96.59 191.84,96.83 191.27,97.06 190.70,97.29 190.14,97.52 189.57,97.74 189.00,97.95 188.44,98.16 187.87,98.37 187.30,98.57 186.74,98.76 186.74,112.21' fill='#009E73' fill-opacity='1' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\\n  <\\/g>\\n <\\/g>\\n<\\/svg>\",\"js\":null,\"uid\":\"svg_4b6b5950_9fcf_4152_860d_99f9f7f03ba7\",\"ratio\":2.333333333333333,\"settings\":{\"tooltip\":{\"css\":\".tooltip_SVGID_ { padding:5px;background:black;color:white;border-radius:2px;text-align:left; ; position:absolute;pointer-events:none;z-index:999;}\",\"placement\":\"doc\",\"opacity\":0.9,\"offx\":10,\"offy\":10,\"use_cursor_pos\":true,\"use_fill\":false,\"use_stroke\":false,\"delay_over\":200,\"delay_out\":500},\"hover\":{\"css\":\".hover_data_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_data_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_data_SVGID_ { fill:orange;stroke:black; }\\nline.hover_data_SVGID_, polyline.hover_data_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_data_SVGID_, polygon.hover_data_SVGID_, path.hover_data_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_data_SVGID_ { stroke:orange; }\",\"reactive\":true,\"nearest_distance\":null},\"hover_inv\":{\"css\":\"\"},\"hover_key\":{\"css\":\".hover_key_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_key_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_key_SVGID_ { fill:orange;stroke:black; }\\nline.hover_key_SVGID_, polyline.hover_key_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_key_SVGID_, polygon.hover_key_SVGID_, path.hover_key_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_key_SVGID_ { stroke:orange; }\",\"reactive\":true},\"hover_theme\":{\"css\":\".hover_theme_SVGID_ { fill:orange;stroke:black;cursor:pointer; }\\ntext.hover_theme_SVGID_ { stroke:none;fill:orange; }\\ncircle.hover_theme_SVGID_ { fill:orange;stroke:black; }\\nline.hover_theme_SVGID_, polyline.hover_theme_SVGID_ { fill:none;stroke:orange; }\\nrect.hover_theme_SVGID_, polygon.hover_theme_SVGID_, path.hover_theme_SVGID_ { fill:orange;stroke:none; }\\nimage.hover_theme_SVGID_ { stroke:orange; }\",\"reactive\":true},\"select\":{\"css\":\".select_data_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_data_SVGID_ { stroke:none;fill:red; }\\ncircle.select_data_SVGID_ { fill:red;stroke:black; }\\nline.select_data_SVGID_, polyline.select_data_SVGID_ { fill:none;stroke:red; }\\nrect.select_data_SVGID_, polygon.select_data_SVGID_, path.select_data_SVGID_ { fill:red;stroke:none; }\\nimage.select_data_SVGID_ { stroke:red; }\",\"type\":\"multiple\",\"only_shiny\":true,\"selected\":[]},\"select_inv\":{\"css\":\"\"},\"select_key\":{\"css\":\".select_key_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_key_SVGID_ { stroke:none;fill:red; }\\ncircle.select_key_SVGID_ { fill:red;stroke:black; }\\nline.select_key_SVGID_, polyline.select_key_SVGID_ { fill:none;stroke:red; }\\nrect.select_key_SVGID_, polygon.select_key_SVGID_, path.select_key_SVGID_ { fill:red;stroke:none; }\\nimage.select_key_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"select_theme\":{\"css\":\".select_theme_SVGID_ { fill:red;stroke:black;cursor:pointer; }\\ntext.select_theme_SVGID_ { stroke:none;fill:red; }\\ncircle.select_theme_SVGID_ { fill:red;stroke:black; }\\nline.select_theme_SVGID_, polyline.select_theme_SVGID_ { fill:none;stroke:red; }\\nrect.select_theme_SVGID_, polygon.select_theme_SVGID_, path.select_theme_SVGID_ { fill:red;stroke:none; }\\nimage.select_theme_SVGID_ { stroke:red; }\",\"type\":\"single\",\"only_shiny\":true,\"selected\":[]},\"zoom\":{\"min\":1,\"max\":1,\"duration\":300},\"toolbar\":{\"position\":\"topright\",\"pngname\":\"diagram\",\"tooltips\":null,\"hidden\":[],\"delay_over\":200,\"delay_out\":500},\"sizing\":{\"rescale\":true,\"width\":1}}},\"evals\":[],\"jsHooks\":[]}"]}]}]}],"align":"center"}],"columnGroups":[{"name":"Penguin's Weight","columns":["Min","Mean","Max","Distribution"]}],"defaultPageSize":3,"style":{"fontFamily":"Source Sans Pro","fontSize":24},"elementId":"tbl-new","dataKey":"ec134c4efbb783e684460cb46d922510"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</section>
+<section id="row" class="level3">
+<h3 class="anchored" data-anchor-id="row">Row</h3>
+<div class="card" title="Look how neatly grouped the species are🟧🟩🟦">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" data-startfrom="180" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 179;"><span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(</span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>      penguin_dat<span class="op">,</span> </span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"bill_length_mm"</span><span class="op">,</span> </span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"flipper_length_mm"</span><span class="op">,</span> </span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"species"</span><span class="op">,</span></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a>        <span class="dt">r</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a>        <span class="dt">opacity</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>        <span class="dt">filter</span><span class="op">:</span> (d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">bill_length_mm</span> <span class="op">&gt;</span> bill_length_min)<span class="op">,</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a>        <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">'Bill length (mm)'</span><span class="op">,</span> <span class="dt">labelOffset</span><span class="op">:</span> <span class="op">-</span><span class="dv">5</span>}<span class="op">,</span></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">'Flipper length (mm)'</span>}<span class="op">,</span></span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">'Species'</span>}<span class="op">,</span></span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {<span class="dt">fontSize</span><span class="op">:</span> <span class="st">"16px"</span>}</span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBzcGVjaWVzX25ldyA9IElucHV0cy5jaGVja2JveChcbiAgW1wiQWRlbGllXCIsIFwiQ2hpbnN0cmFwXCIsIFwiR2VudG9vXCJdLFxuICB7XG4gICAgdmFsdWU6IFtcIkFkZWxpZVwiLCBcIkNoaW5zdHJhcFwiLCBcIkdlbnRvb1wiXSxcbiAgICBsYWJlbDogXCJTcGVjaWVzXCJcbiAgfVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoicGVuZ3Vpbl9kYXQgPSBGaWxlQXR0YWNobWVudChcInBlbmd1aW5zLmNzdlwiKS5jc3YoeyB0eXBlZDogdHJ1ZSB9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGJpbGxfbGVuZ3RoX21pbiA9IElucHV0cy5yYW5nZShcbiAgZDMuZXh0ZW50KHBlbmd1aW5fZGF0LCBkID0+IGQuYmlsbF9sZW5ndGhfbW0pLCBcbiAge2xhYmVsOiBcIkNob29zZSBtaW5pbXVtIGJpbGwgbGVuZ3RoIChtbSk6XCIsIFxuICBzdGVwOiAxLFxuICB2YWx1ZTogMzV9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJkYXRhX25ldyA9IEZpbGVBdHRhY2htZW50KFwicGVuZ3Vpbl93ZWlnaHRzLmNzdlwiKS5jc3YoeyB0eXBlZDogdHJ1ZSB9KVxuXG5maWx0ZXJlZF9uZXcgPSBkYXRhX25ldy5maWx0ZXIocGVuZ3VpbiA9PiB7XG4gIHJldHVybiBzcGVjaWVzX25ldy5pbmNsdWRlcyhwZW5ndWluLlNwZWNpZXMpXG59KVxuXG4vLyBVcGRhdGUgdGFibGUgZGF0YSB3aGVuIGZpbHRlcmVkIGRhdGEgY2hhbmdlc1xuUmVhY3RhYmxlLnNldERhdGEoJ3RibC1uZXcnLCBmaWx0ZXJlZF9uZXcpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJQbG90LnBsb3Qoe1xuICBtYXJrczogW1xuICAgIFBsb3QuZG90KFxuICAgICAgcGVuZ3Vpbl9kYXQsIFxuICAgICAge1xuICAgICAgICB4OiBcImJpbGxfbGVuZ3RoX21tXCIsIFxuICAgICAgICB5OiBcImZsaXBwZXJfbGVuZ3RoX21tXCIsIFxuICAgICAgICBmaWxsOiBcInNwZWNpZXNcIixcbiAgICAgICAgcjogNSxcbiAgICAgICAgb3BhY2l0eTogMC44LFxuICAgICAgICBmaWx0ZXI6IChkID0+IGQuYmlsbF9sZW5ndGhfbW0gPiBiaWxsX2xlbmd0aF9taW4pLFxuICAgICAgICB0aXA6IHRydWVcbiAgICAgIH1cbiAgICApXG4gIF0sXG4gIGdyaWQ6IHRydWUsXG4gIHg6IHtsYWJlbDogJ0JpbGwgbGVuZ3RoIChtbSknLCBsYWJlbE9mZnNldDogLTV9LFxuICB5OiB7bGFiZWw6ICdGbGlwcGVyIGxlbmd0aCAobW0pJ30sXG4gIGNvbG9yOiB7bGFiZWw6ICdTcGVjaWVzJ30sXG4gIHN0eWxlOiB7Zm9udFNpemU6IFwiMTZweFwifVxufSk7XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NwZWNpZXNfbmV3JykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2JpbGxfbGVuZ3RoX21pbicpIn1dfQ==
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../..";
+window._ojs.paths.runtimeToRoot = "../../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
